@@ -73,7 +73,7 @@ $ node .
 Bot WhatsApp masih dalam tahap pengembangan, jadi ada beberapa bug
 Koneksi WhatsApp (BETA, tidak berfungsi dengan sempurna)
 
-Editing Number Owner & session name in [`config.js`](https://github.com/Warikrr/naze/config.js)
+Editing Number Owner & session name in [`config.js`](https://github.com/nazedev/naze/blob/main/config.js)
 Get Apikey zenz on [`zenz`](https://zenzapi.xyz/pricing)
 
 
