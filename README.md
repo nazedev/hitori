@@ -1,7 +1,7 @@
 # CATATAN ( NOTE )
 sc ini hanyalah hasil recode dari sc asli hisoka
-Naze hanya menghilangkat bug, memperbagus & menyeting banyak hal
-Agar tidak terjadi error
+naze hanya menghilangkat bug, memperbagus & menyeting banyak hal
+agar tidak terjadi error
 
 #NazeMD
 Script WhatsApp Bot Multi Device
