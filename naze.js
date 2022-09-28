@@ -10,6 +10,7 @@ const axios = require('axios')
 const chalk = require('chalk')
 const yts = require('yt-search')
 const xfar = require('xfarr-api')
+const nhen = require('nhentai-js')
 const google = require('google-it')
 const { exec, spawn, execSync } = require("child_process")
 const moment = require('moment-timezone')
@@ -2063,6 +2064,12 @@ break
                 let msg = await naze.sendMessage(m.chat, buttonMessage, { quoted: m })
                 naze.sendMessage(m.chat, { audio: { url: anu.result.nowm }, mimetype: 'audio/mpeg'}, { quoted: msg })
             }
+            break
+            case 'nhentai': {
+            	if (!text) throw `Example : ${prefix+ command} 123456`
+                let dojin = await nhen.getDoujin(`text`)
+                naze.sendMessage(m.chat, { document: { url: dojin.details.pages }, fileName: text + '.pdf', mimetype: 'application/pdf' }, { quoted: m })
+            	}
             break
 	        case 'instagram': case 'ig': case 'igdl': {
                 if (!text) throw 'No Query Url!'
