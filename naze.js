@@ -160,9 +160,9 @@ module.exports = naze = async (naze, m, chatUpdate, store) => {
         // total hit
         global.hit = {}
 if (isCmd) {
-data = await fetchJson('https://api.countapi.xyz/hit/naze-md/visits')
+data = await fetchJson('https://api.countapi.xyz/hit/naze/visits')
 jumlahcmd = `${data.value}`
-dataa = await fetchJson(`https://api.countapi.xyz/hit/naze-md${moment.tz('Asia/Jakarta').format('DDMMYYYY')}/visits`)
+dataa = await fetchJson(`https://api.countapi.xyz/hit/naze${moment.tz('Asia/Jakarta').format('DDMMYYYY')}/visits`)
 jumlahharian = `${dataa.value}`
 }
 
