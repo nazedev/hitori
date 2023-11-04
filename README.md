@@ -81,7 +81,7 @@ node .
 ### Features
 | Menu     | Bot | Group | Search | Download | Tools | Ai | Game | Fun | Owner |
 | -------- | --- | ----- | ------ | -------- | ----- | -- | ---- | --- | ----- |
-| Work     |  ✅  |   ✅   |    ✅    |     ✅     |   ✅   | ✅ |   ✅   |  ✅  |    ✅    |
+| Work     | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 
 
 License: [MIT](https://choosealicense.com/licenses/mit/)
