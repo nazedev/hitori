@@ -597,7 +597,7 @@ async function Serialize(naze, m, store) {
 				const data = await axios.get(text, { responseType: 'arraybuffer' });
 				const mime = data.headers['content-type'] || (await FileType.fromBuffer(data.data)).mime
 				if (/gif|image|video|audio|pdf/i.test(mime)) {
-					return naze.sendFileUrl(chatId, text, caption, quoted)
+					return naze.sendFileUrl(chatId, text, caption, quoted, options)
 				} else {
 					return naze.sendMessage(chatId, { text: text, mentions: [...text.matchAll(/@(\d{0,16})/g)].map(v => v[1] + '@s.whatsapp.net'), ...options }, { quoted })
 				}
