@@ -96,7 +96,7 @@ module.exports = naze = async (naze, m, chatUpdate, store) => {
 			message: {
 				contactMessage: {
 					displayName: (m.pushName || 'Naze'),
-					vcard: `BEGIN:VCARD\nVERSION:3.0\nN:XL;ytname,;;;\nFN:ytname\nitem1.TEL;waid=${m.sender}:${m.sender}\nitem1.X-ABLabel:Ponsel\nEND:VCARD`,
+					vcard: `BEGIN:VCARD\nVERSION:3.0\nN:XL;ytname,;;;\nFN:ytname\nitem1.TEL;waid=${m.sender.split('@')[0]}:${m.sender.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD`,
 					sendEphemeral: true
 				}
 			}
