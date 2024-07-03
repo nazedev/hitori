@@ -262,6 +262,7 @@ async function MessagesUpsert(naze, message, store) {
 		const type = msg.message ? (getContentType(msg.message) || Object.keys(msg.message)[0]) : '';
 		if (!naze.public && !msg.key.fromMe && message.type === 'notify') return
 		if (msg.key.id.startsWith('BAE5')) return
+		if (msg.key.id.length === 22) return
 		if (!msg.message) return
 		const m = await Serialize(naze, msg, store)
 		require('../naze')(naze, m, message, store);
