@@ -336,7 +336,7 @@ async function Solving(naze, store) {
 		const res = await axios.get(url, { responseType: 'arraybuffer' });
 		const mime = res.headers['content-type'];
 		if (mime === 'application/octet-stream') {
-			const mimetype = (await FileType.fromBuffer(buffer.data)).mime
+			const mimetype = (await FileType.fromBuffer(res.data)).mime
 			await getFileUrl(res, mimetype);
 		} else {
 			await getFileUrl(res, mime);
