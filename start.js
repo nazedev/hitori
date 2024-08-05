@@ -6,14 +6,11 @@ function start() {
 	let p = spawn(process.argv[0], args, {
 		stdio: ['inherit', 'inherit', 'inherit', 'ipc']
 	}).on('message', data => {
-		switch (data) {
-			case 'reset':
-			start()
+		if (data == 'reset') {
 			console.log('Restarting Bot...')
-			break
-			case 'uptime':
-			p.send(process.uptime());
-			break
+			p.kill()
+			start()
+			delete p
 		}
 	}).on('exit', code => {
 		console.error('Exited with code:', code)
