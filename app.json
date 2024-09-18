@@ -1,7 +1,7 @@
 {
-	"name": "hitori",
+	"name": "whatsapp",
 	"description": "WhatsApp Bot Using Lib Baileys",
-	"repository": "https://github.com/nazedev/hitori",
+	"repository": "https://github.com/nazedev/whatsapp",
 	"logo": "https://node-js-sample.herokuapp.com/node.png",
 	"keywords": ["multi-device"]
 }
