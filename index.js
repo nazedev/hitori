@@ -9,7 +9,7 @@ const FileType = require('file-type');
 const { exec } = require('child_process');
 const { Boom } = require('@hapi/boom');
 const NodeCache = require('node-cache');
-const PhoneNumber = require('awesome-phonenumber');
+const { parsePhoneNumber } = require('awesome-phonenumber');
 const { default: WAConnection, useMultiFileAuthState, Browsers, DisconnectReason, makeInMemoryStore, makeCacheableSignalKeyStore, fetchLatestWaWebVersion, proto, PHONENUMBER_MCC, getAggregateVotesInPollMessage } = require('@whiskeysockets/baileys');
 
 const pairingCode = global.pairing_code || process.argv.includes('--pairing-code');
@@ -98,7 +98,7 @@ async function startNazeBot() {
 			phoneNumber = await question('Please type your WhatsApp number : ');
 			phoneNumber = phoneNumber.replace(/[^0-9]/g, '')
 			
-			if (!Object.keys(PHONENUMBER_MCC).some(v => phoneNumber.startsWith(v)) && !phoneNumber.length < 6) {
+			if (!parsePhoneNumber(phoneNumber).valid && phoneNumber.length < 6) {
 				console.log(chalk.bgBlack(chalk.redBright('Start with your Country WhatsApp code') + chalk.whiteBright(',') + chalk.greenBright(' Example : 62xxx')));
 				await getPhoneNumber()
 			}
