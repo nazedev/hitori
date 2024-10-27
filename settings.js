@@ -1,7 +1,7 @@
 const fs = require('fs');
 const chalk = require('chalk');
 
-/*
+/**
 	* Create By Naze
 	* Follow https://github.com/nazedev
 	* Whatsapp : wa.me/6282113821188
