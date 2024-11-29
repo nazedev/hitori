@@ -1,6 +1,6 @@
 {
   "name": "hitori",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Bot WhatsApp Using Lib Baileys Multi Device",
   "main": "start.js",
   "type": "commonjs",
