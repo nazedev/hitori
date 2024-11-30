@@ -12,7 +12,6 @@ const { exec, spawn, execSync } = require('child_process');
 const { parsePhoneNumber } = require('awesome-phonenumber');
 const { default: WAConnection, useMultiFileAuthState, Browsers, DisconnectReason, makeInMemoryStore, makeCacheableSignalKeyStore, fetchLatestBaileysVersion, proto, getAggregateVotesInPollMessage } = require('@whiskeysockets/baileys');
 
-let phoneNumber = process.argv.includes('--no-') ? process.argv.slice(2).find(arg => arg.startsWith('--no-')).split('--no-')[1] : null
 const pairingCode = process.argv.includes('--qr') ? false : process.argv.includes('--pairing-code') || global.pairing_code;
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout })
 const store = makeInMemoryStore({ logger: pino().child({ level: 'silent', stream: 'store' }) })
@@ -98,7 +97,8 @@ async function startNazeBot() {
 	
 	if (pairingCode && !naze.authState.creds.registered) {
 		async function getPhoneNumber() {
-			phoneNumber = phoneNumber || await question('Please type your WhatsApp number : ');
+			let phoneNumber;
+			phoneNumber = await question('Please type your WhatsApp number : ');
 			phoneNumber = phoneNumber.replace(/[^0-9]/g, '')
 			
 			if (!parsePhoneNumber(phoneNumber).valid && phoneNumber.length < 6) {
