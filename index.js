@@ -98,7 +98,7 @@ async function startNazeBot() {
 	
 	if (pairingCode && !naze.authState.creds.registered) {
 		async function getPhoneNumber() {
-			phoneNumber = await question('Please type your WhatsApp number : ');
+			phoneNumber = phoneNumber || await question('Please type your WhatsApp number : ');
 			phoneNumber = phoneNumber.replace(/[^0-9]/g, '')
 			
 			if (!parsePhoneNumber(phoneNumber).valid && phoneNumber.length < 6) {
