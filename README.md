@@ -14,12 +14,12 @@ This script is created by [Nazedev](https://github.com/nazedev) using Node.js an
 
 ## Contributor
 
-- [NazeDev](https://github.com/nazedev) (Pembuat)
+- [NazeDev](https://github.com/Kafapratama/hitori.git) (Pembuat)
 - [Zaynn](https://github.com/ZaynRcK) (Penyedia Layanan API)
 - [Dani](https://github.com/nazedev) (Penyumbang Code)
 
 #### Join Group
-[![Grup WhatsApp](https://img.shields.io/badge/WhatsApp%20Group-25D366?style=for-the-badge&logo=whatsapp&logoColor=white)](https://chat.whatsapp.com/Hx9vcBVhbc04KLVGPFtH2R) 
+[![Grup WhatsApp](https://chat.whatsapp.com/Ei34wgm2ofWKfJzcq4a5BHpp%20Group-25D366?style=for-the-badge&logo=whatsapp&logoColor=white)](https://chat.whatsapp.com/Ei34wgm2ofWKfJzcq4a5BH) 
 
 ---
 #### Deploy to Heroku
