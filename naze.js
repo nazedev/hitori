@@ -219,9 +219,7 @@ module.exports = naze = async (naze, m, chatUpdate, store) => {
 			Dzuhur: '12:06',
 			Ashar: '15:21',
 			Maghrib: '18:08',
-			Isya: '19:28',
-			Sepuh: '20:10',
-			Sepuh_Dani: '20:13',
+			Isya: '19:28'
 		}
 		if (!this.intervalSholat) this.intervalSholat = null;
 		if (!this.waktusholat) this.waktusholat = {};
