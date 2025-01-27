@@ -162,7 +162,7 @@ async function startNazeBot() {
 						await naze.chatModify({ archive: true }, grupnya, [])
 						if (my.ch) await naze.newsletterMsg(my.ch, { type: 'follow' })
 						db.set[botNumber].join = true
-					}).catch(e => console.log(String(e)))
+					}).catch(e => {})
 				}
 			}
 		}
