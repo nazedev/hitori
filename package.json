@@ -13,7 +13,7 @@
     "bot-wa",
     "multi-device"
   ],
-  "author": "Nazedev",
+  "author": "SennTzyy",
   "license": "MIT",
   "dependencies": {
     "@hapi/boom": "^10.0.0",
