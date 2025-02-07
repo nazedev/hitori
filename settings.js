@@ -58,14 +58,12 @@ global.mess = {
 	wait: 'Loading...',
 	error: 'Error!',
 	done: 'Done'
-}
-global.apikey = {hitory: ['Bell409']
-
+		
 global.APIs = {
 	hitori: 'https://aihub.xtermai.xyz',
 }
 global.APIKeys = {
-	'https://aihub.xtermai.xyz',
+	'https://aihub.xtermai.xyz: Bell409',
 }
 
 //~~~~~~~~~~~~~~~< PROCESS >~~~~~~~~~~~~~~~\\
