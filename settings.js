@@ -59,12 +59,13 @@ global.mess = {
 	error: 'Error!',
 	done: 'Done'
 }
+global.apikey = {hitory: ['Bell409']
 
 global.APIs = {
-	hitori: 'https://my.hitori.pw/api',
+	hitori: 'https://aihub.xtermai.xyz',
 }
 global.APIKeys = {
-	'https://my.hitori.pw/api': 'htrkey-awokawok',
+	'https://aihub.xtermai.xyz',
 }
 
 //~~~~~~~~~~~~~~~< PROCESS >~~~~~~~~~~~~~~~\\
