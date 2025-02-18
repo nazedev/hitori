@@ -1,1 +1,65 @@
-{}
+{
+  "set": {
+    "85291053420@s.whatsapp.net": {
+      "lang": "id",
+      "limit": 0,
+      "uang": 0,
+      "status": 0,
+      "join": true,
+      "public": true,
+      "anticall": true,
+      "original": true,
+      "readsw": false,
+      "autobio": false,
+      "autoread": true,
+      "antispam": false,
+      "autotyping": true,
+      "multiprefix": false,
+      "template": "textMessage"
+    }
+  },
+  "users": {
+    "85291053420@s.whatsapp.net": {
+      "vip": false,
+      "afkTime": -1,
+      "afkReason": "",
+      "limit": 20,
+      "uang": 10000,
+      "lastclaim": 1739852473223,
+      "lastbegal": 1739852473223,
+      "lastrampok": 1739852473223
+    },
+    "6283172999950@s.whatsapp.net": {
+      "vip": false,
+      "afkTime": -1,
+      "afkReason": "",
+      "limit": 19,
+      "uang": 10000,
+      "lastclaim": 1739852536564,
+      "lastbegal": 1739852536564,
+      "lastrampok": 1739852536564
+    }
+  },
+  "game": {
+    "suit": [],
+    "menfes": [],
+    "tekateki": [],
+    "akinator": [],
+    "tictactoe": [],
+    "tebaklirik": [],
+    "kuismath": [],
+    "tebaklagu": [],
+    "tebakkata": [],
+    "family100": [],
+    "susunkata": [],
+    "tebakbom": [],
+    "tebakkimia": [],
+    "caklontong": [],
+    "tebakangka": [],
+    "tebaknegara": [],
+    "tebakgambar": [],
+    "tebakbendera": []
+  },
+  "groups": {},
+  "database": {}
+}
