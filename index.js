@@ -53,7 +53,6 @@ const { isUrl, generateMessageTag, getBuffer, getSizeMedia, fetchJson, sleep } =
 */
 
 async function startNazeBot() {
-	let lastMessageTime = Date.now();
 	const store = makeInMemoryStore({ logger: pino().child({ level: 'silent', stream: 'store' }) })
 	const { state, saveCreds } = await useMultiFileAuthState('nazedev');
 	const { version, isLatest } = await fetchLatestBaileysVersion();
@@ -193,7 +192,6 @@ async function startNazeBot() {
 	});
 	
 	naze.ev.on('messages.upsert', async (message) => {
-		lastMessageTime = Date.now();
 		await MessagesUpsert(naze, message, store, groupCache);
 	});
 	
@@ -204,13 +202,6 @@ async function startNazeBot() {
 	naze.ev.on('group-participants.update', async (update) => {
 		await GroupParticipantsUpdate(naze, update, store, groupCache);
 	});
-	
-	setInterval(() => {
-		if (Date.now() - lastMessageTime > 30 * 60 * 1000) {
-			console.log('No messages received for 30 minutes, restarting bot...');
-			process.exit(0);
-		}
-	}, 30 * 60 * 1000);
 
 	return naze
 }
