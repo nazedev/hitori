@@ -160,11 +160,10 @@ let tebakgambar = (db.game.tebakgambar = []);
 let tebakbendera = (db.game.tebakbendera = []);
 module.exports = naze = async (naze, m, chatUpdate, store, groupCache) => {
   try {
-    
     await LoadDataBase(naze, m);
 
     const botNumber = await naze.decodeJid(naze.user.id);
-   const setPublic = db.set[botNumber].public ? true : false
+    let setPublic = db.set[botNumber].public ? true : false;
     const body =
       m.type === "conversation"
         ? m.message.conversation
