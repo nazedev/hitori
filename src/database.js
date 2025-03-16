@@ -8,10 +8,7 @@ let DataBase;
 
 if (/mongo/.test(global.tempatDB)) {
   class MongoDB {
-    constructor(
-      url = global.tempatDB,
-      options = { useNewUrlParser: true, useUnifiedTopology: true },
-    ) {
+    constructor(url = global.tempatDB, options = { useNewUrlParser: true }) {
       this.url = url;
       this.data = {};
       this._model = {};
@@ -29,7 +26,7 @@ if (/mongo/.test(global.tempatDB)) {
             default: {},
           },
         });
-        this._model = mongoose.model("data", schema);
+        this._model = mongoose.models.datas || mongoose.model("data", schema);
       } catch (error) {
         console.error(chalk.red("Connection error:", error));
       }
@@ -37,7 +34,6 @@ if (/mongo/.test(global.tempatDB)) {
 
     async read() {
       await this.connect();
-
       this.data = await this._model.findOne({});
       if (!this.data) {
         await new this._model({ data: {} }).save();
@@ -103,4 +99,3 @@ fs.watchFile(file, () => {
   delete require.cache[file];
   require(file);
 });
-
