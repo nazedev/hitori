@@ -3063,12 +3063,12 @@ module.exports = naze = async (naze, m, msg, store, groupCache) => {
 					pick: 0,
 					nyawa: ['❤️', '❤️', '❤️'],
 				}
+				await m.reply(`*TEBAK BOM*\n\n${tebakbom[m.sender].board.join("")}\n\nPilih lah nomor tersebut! dan jangan sampai terkena Bom!\nBomb : ${tebakbom[m.sender].bomb}\nNyawa : ${tebakbom[m.sender].nyawa.join("")}`);
 				await sleep(120000)
 				if (tebakbom[m.sender]) {
 					m.reply(`_Waktu ${command} habis_`)
 					delete tebakbom[m.sender];
 				}
-				m.reply(`*TEBAK BOM*\n\n${tebakbom[m.sender].board.join("")}\n\nPilih lah nomor tersebut! dan jangan sampai terkena Bom!\nBomb : ${tebakbom[m.sender].bomb}\nNyawa : ${tebakbom[m.sender].nyawa.join("")}`);
 			}
 			break
 			case 'tekateki': {
