@@ -2,17 +2,17 @@ const fs = require('fs');
 const chalk = require('chalk');
 
 /*
-	* Create By Naze
-	* Follow https://github.com/nazedev
-	* Whatsapp : https://whatsapp.com/channel/0029VaWOkNm7DAWtkvkJBK43
+	* Create By Lesta
+	* Follow https://github.com/Fetal01
+	* Whatsapp : https://whatsapp.com/254701309409
 */
 
 //~~~~~~~~~~~~< GLOBAL SETTINGS >~~~~~~~~~~~~\\
 
-global.owner = ['6282113821188'] //['628','628'] 2 owner
-global.packname = 'Bot WhatsApp'
-global.author = 'Nazedev'
-global.botname = 'Naze Bot'
+global.owner = ['254701309409','254725100848'] //['628','628'] 2 owner
+global.packname = 'Lesta Whatsapp'
+global.author = 'Lesta_Eliud'
+global.botname = '___LESTA___Bot___'
 global.listprefix = ['+','!','.']
 global.listv = ['•','●','■','✿','▲','➩','➢','➣','➤','✦','✧','△','❀','○','□','♤','♡','◇','♧','々','〆']
 global.tempatDB = 'database.json' // Taruh url mongodb di sini jika menggunakan mongodb. Format : 'mongodb+srv://...'
@@ -35,29 +35,29 @@ global.my = {
 }
 
 global.limit = {
-	free: 20,
-	premium: 999,
-	vip: 9999
+	free: 99999,
+	premium: 9999,
+	vip: 99999
 }
 
 global.uang = {
-	free: 10000,
-	premium: 1000000,
+	free: 10000000,
+	premium: 10000000,
 	vip: 10000000
 }
 
 global.mess = {
 	key: 'Apikey mu telah habis silahkan kunjungi\nhttps://my.hitori.pw',
-	owner: 'Fitur Khusus Owner!',
-	admin: 'Fitur Khusus Admin!',
+	owner: 'must be Owner!',
+	admin: 'must be Admin!',
 	botAdmin: 'Bot Bukan Admin!',
 	group: 'Gunakan Di Group!',
 	private: 'Gunakan Di Privat Chat!',
 	limit: 'Limit Anda Telah Habis!',
 	prem: 'Khusus User Premium!',
-	wait: 'Loading...',
-	error: 'Error!',
-	done: 'Done'
+	wait: 'Loading〰️...',
+	error: 'Error🚫!',
+	done: 'Done👍'
 }
 
 global.APIs = {
