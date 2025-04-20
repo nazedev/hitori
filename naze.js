@@ -3298,7 +3298,7 @@ module.exports = naze = async (naze, m, msg, store, groupCache) => {
 			break
 			
 			// Menu
-			case 'menu': {
+			case 'menuset': {
 				if (args[0] == 'set') {
 					if (['1','2','3'].includes(args[1])) {
 						set.template = parseInt(Number(args[1]))
@@ -3307,7 +3307,7 @@ module.exports = naze = async (naze, m, msg, store, groupCache) => {
 				} else await templateMenu(naze, set.template, m, prefix, setv, db, { botNumber, isVip, isPremium })
 			}
 			break
-			case 'allmenu': {
+			case 'menu': {
 				let profile
 				try {
 					profile = await naze.profilePictureUrl(m.sender, 'image');
@@ -3324,6 +3324,7 @@ module.exports = naze = async (naze, m, msg, store, groupCache) => {
 ╰─┬────❍
 ╭─┴─❍「 *BOT INFO* 」❍
 ├ *Nama Bot* : ${botname}
+|-*Bot Number* :${botnumber}
 ├ *Powered* : @${'0@s.whatsapp.net'.split('@')[0]}
 ├ *Owner* : @${owner[0].split('@')[0]}
 ├ *Mode* : ${naze.public ? 'Public' : 'Self'}
@@ -3562,20 +3563,15 @@ module.exports = naze = async (naze, m, msg, store, groupCache) => {
 │${setv} <
 ╰──────❍`
 				await m.reply({
-					document: fake.docs,
-					fileName: ucapanWaktu,
-					mimetype: pickRandom(fake.listfakedocs),
-					fileLength: '100000000000000',
-					pageCount: '999',
 					caption: menunya,
 					contextInfo: {
 						mentionedJid: [m.sender, '0@s.whatsapp.net', owner[0] + '@s.whatsapp.net'],
 						forwardingScore: 10,
 						isForwarded: true,
 						forwardedNewsletterMessageInfo: {
-							newsletterJid: my.ch,
+							newsletterJid: my.group,
 							serverMessageId: null,
-							newsletterName: 'Join For More Info'
+							newsletterName: 'Join my group'
 						},
 						externalAdReply: {
 							title: author,
