@@ -137,22 +137,22 @@ async function LoadDataBase(naze, m) {
 		const defaultSetBot = {
 			lang: 'id',
 			limit: 0,
-			uang: 0,
+			price: 1000,
 			status: 0,
 			join: false,
 			public: true,
 			anticall: true,
 			original: true,
 			readsw: false,
-			autobio: false,
+			autobio: true,
 			autoread: true,
 			antispam: false,
 			autotyping: true,
 			grouponly: true,
 			multiprefix: false,
-			privateonly: true,
+			privateonly: false,
 			autobackup: false,
-			template: 'listMessage',
+			template: 'menu',
 		};
 		for (let key in defaultSetBot) {
 			if (!(key in setBot)) setBot[key] = defaultSetBot[key];
@@ -162,10 +162,10 @@ async function LoadDataBase(naze, m) {
 		const uangUser = user.vip ? global.uang.vip : prem.checkPremiumUser(m.sender, premium) ? global.uang.premium : global.uang.free;
 		
 		const defaultUser = {
-			vip: false,
+			vip: true,
 			ban: false,
 			afkTime: -1,
-			afkReason: '',
+			afkReason: 'Eliud Njora Went to rest 💤😴',
 			limit: limitUser,
 			uang: uangUser,
 			lastclaim: Date.now(),
@@ -189,14 +189,14 @@ async function LoadDataBase(naze, m) {
 				mute: false,
 				leave: false,
 				setinfo: false,
-				antilink: false,
+				antilink: true,
 				demote: false,
 				antitoxic: false,
 				promote: false,
-				welcome: false,
+				welcome: true,
 				antivirtex: false,
 				antitagsw: false,
-				antidelete: false,
+				antidelete: true,
 				antihidetag: false,
 				waktusholat: false,
 			};
