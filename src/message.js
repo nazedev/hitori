@@ -50,7 +50,41 @@ async function GroupUpdate(naze, m, store) {
 }
 
 async function GroupParticipantsUpdate(naze, { id, participants, author, action }, store, groupCache) {
-	try {
+  try {
+    if (action === 'add') {
+      for (const user of participants) {
+        await naze.sendMessage(id, {
+          text: `🎉 SELAMAT DATANG DI CLAN JUMAWA! 🎉
+Tempatnya petualang damai, kompak, dan saling support!
+
+Halo, @${user.split('@')[0]}!
+Terima kasih sudah bergabung bersama Clan Jumawa di Silvavita SMP!
+
+Di sini kita main santai tapi tetap serius berkembang.
+Gak ada drama, gak ada egois, cuma kekeluargaan, kerja sama, dan tawa bareng!
+
+---
+
+🔥 Quick Guide Clan Jumawa:
+• Jangan egois — kita tumbuh bareng!
+• Saling bantu, saling respect
+• Punya ide? Share aja!
+• Bangun bareng, panen bareng, panen XP bareng!
+• Aktif ngobrol & gabung di kegiatan clan ya!
+
+---
+
+Leader: Pupung
+Admin: Fraxy_MC
+Kalau ada pertanyaan, langsung tag aja mereka`,
+          mentions: [user]
+        });
+      }
+    }
+  } catch (error) {
+    console.error('Error in GroupParticipantsUpdate:', error);
+  }
+}
 		function updateAdminStatus(participants, metadataParticipants, status) {
 			for (const participant of metadataParticipants) {
 				let id = jidNormalizedUser(participant.id);
