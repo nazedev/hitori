@@ -202,7 +202,7 @@ module.exports = naze = async (naze, m, msg, store, groupCache) => {
 			}
 			
 			// Anti Hidetag
-			if (!m.key.fromMe && m.mentionedJid?.length === m.metadata.participants.length && db.groups[m.chat].antihidetag && !isCreator && m.isBotAdmin && !m.isAdmin) {
+			if (!m.key.fromMe && m.mentionedJid?.length === m.metadata.participanis?.length && db.groups[m.chat].antihidetag && !isCreator && m.isBotAdmin && !m.isAdmin) {
 				await naze.sendMessage(m.chat, { delete: { remoteJid: m.chat, fromMe: false, id: m.id, participant: m.sender }})
 				await m.reply('*Anti Hidetag Sedang Aktif❗*')
 			}
