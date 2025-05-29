@@ -21,7 +21,7 @@ const { jidNormalizedUser, proto, getBinaryNodeChildren, getBinaryNodeChild, gen
 
 async function GroupUpdate(naze, m, store) {
 	if (!m.messageStubType || !m.isGroup) return
-	if (global.db?.groups[m.chat]?.setinfo && naze.public) {
+	if (global.db?.groups?.[m.chat]?.setinfo && naze.public) {
 		const admin = `@${m.sender.split`@`[0]}`
 		const messages = {
 			1: 'mereset link grup!',
@@ -59,7 +59,7 @@ async function GroupParticipantsUpdate(naze, { id, participants, author, action 
 				}
 			}
 		}
-		if (global.db?.groups[id] && store?.groupMetadata[id]) {
+		if (global.db?.groups?.[id] && store?.groupMetadata?.[id]) {
 			const metadata = store.groupMetadata[id];
 			for (let n of participants) {
 				let profile;
