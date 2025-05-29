@@ -256,9 +256,11 @@ async function startNazeBot() {
 		await MessagesUpsert(naze, message, store, groupCache);
 	});
 	
-	naze.ev.on('group-participants.update', async (update) => {
-		await GroupParticipantsUpdate(naze, update, store, groupCache);
-	});
+	const { GroupParticipantsUpdate } = require('./handler/GroupParticipantsUpdate');
+
+naze.ev.on('group-participants.update', async (update) => {
+	await GroupParticipantsUpdate(naze, update, store, groupCache);
+});
 	
 	naze.ev.on('groups.update', (update) => {
 		for (const n of update) {
