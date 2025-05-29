@@ -257,25 +257,17 @@ async function startNazeBot() {
 	});
 	
 	naze.ev.on('group-participants.update', async (update) => {
-  try {
-    const metadata = await naze.groupMetadata(update.id);
-    for (const participant of update.participants) {
-      if (update.action === 'add') {
-        await naze.sendMessage(update.id, {
-          text: `👋 Selamat datang @${participant.split('@')[0]} di grup *${metadata.subject}*`,
-          mentions: [participant]
-        });
-      } else if (update.action === 'remove') {
-        await naze.sendMessage(update.id, {
-          text: `👋 Selamat tinggal @${participant.split('@')[0]}`,
-          mentions: [participant]
-        });
-      }
-    }
-  } catch (e) {
-    console.error(e);
-  }
-});
+		await GroupParticipantsUpdate(naze, update, store, groupCache);
+	});
+	
+	naze.ev.on('groups.update', (update) => {
+		for (const n of update) {
+			if (store.groupMetadata[n.id]) {
+				groupCache.set(n.id, n);
+				Object.assign(store.groupMetadata[n.id], n);
+			}
+		}
+	});
 	
 	naze.ev.on('presence.update', ({ id, presences: update }) => {
 		store.presences[id] = store.presences?.[id] || {};
