@@ -713,6 +713,7 @@ async function Solving(naze, store) {
 */
 
 async function Serialize(naze, msg, store, groupCache) {
+	const botLid = naze.decodeJid(naze.user.lid);
 	const botNumber = naze.decodeJid(naze.user.id);
 	const m = { ...msg };
 	if (!m) return m
@@ -735,7 +736,7 @@ async function Serialize(naze, msg, store, groupCache) {
 			m.admins = m.metadata.participants ? (m.metadata.participants.reduce((a, b) => (b.admin ? a.push({ id: b.id, admin: b.admin }) : [...a]) && a, [])) : []
 			m.isAdmin = m.admins?.some((b) => b.id === m.sender) || false
 			m.participant = m.key.participant
-			m.isBotAdmin = !!m.admins?.find((member) => member.id === botNumber) || false
+			m.isBotAdmin = !!m.admins?.find((member) => [botNumber, botLid].includes(member.id)) || false
 		}
 	}
 	if (m.message) {
