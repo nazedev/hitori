@@ -245,9 +245,6 @@ async function MessagesUpsert(naze, message, store, groupCache) {
 		const type = msg.message ? (getContentType(msg.message) || Object.keys(msg.message)[0]) : '';
 		const m = await Serialize(naze, msg, store, groupCache)
 		require('../naze')(naze, m, msg, store, groupCache);
-		if (type === 'interactiveResponseMessage' && m.quoted && m.quoted.fromMe) {
-			await naze.appendResponseMessage(m, JSON.parse(m.msg.nativeFlowResponseMessage.paramsJson).id);
-		}
 		if (db?.set?.[botNumber]?.readsw && msg.key.remoteJid === 'status@broadcast') {
 			await naze.readMessages([msg.key]);
 			if (/protocolMessage/i.test(type)) await naze.sendFromOwner(global.owner, 'Status dari @' + msg.key.participant.split('@')[0] + ' Telah dihapus', msg, { mentions: [msg.key.participant] });
