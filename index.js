@@ -42,12 +42,12 @@ const { isUrl, generateMessageTag, getBuffer, getSizeMedia, fetchJson, sleep } =
 
 /*
 	* Create By Naze
-	* Follow https://github.com/nazedev
-	* Whatsapp : https://whatsapp.com/channel/0029VaWOkNm7DAWtkvkJBK43
+	* Follow https://github.com/rizkixml/hitori
+	* Whatsapp : 6289653963461
 */
 
-async function startNazeBot() {
-	const { state, saveCreds } = await useMultiFileAuthState('nazedev');
+async function startFurinaBot() {
+	const { state, saveCreds } = await useMultiFileAuthState('furina');
 	const { version, isLatest } = await fetchLatestBaileysVersion();
 	const level = pino({ level: 'silent' });
 	
@@ -106,11 +106,11 @@ async function startNazeBot() {
 			return msg?.message || ''
 		}
 		return {
-			conversation: 'Halo Saya Naze Bot'
+			conversation: 'Halo Saya Furina Bot'
 		}
 	}
 	
-	const naze = WAConnection({
+	const furina = WAConnection({
 		logger: level,
 		getMessage,
 		syncFullHistory: true,
@@ -141,7 +141,7 @@ async function startNazeBot() {
 		},
 	})
 	
-	if (pairingCode && !phoneNumber && !naze.authState.creds.registered) {
+	if (pairingCode && !phoneNumber && !furina.authState.creds.registered) {
 		async function getPhoneNumber() {
 			phoneNumber = global.number_bot ? global.number_bot : process.env.BOT_NUMBER || await question('Please type your WhatsApp number : ');
 			phoneNumber = phoneNumber.replace(/[^0-9]/g, '')
@@ -158,18 +158,18 @@ async function startNazeBot() {
 		})()
 	}
 	
-	await Solving(naze, store)
+	await Solving(furina, store)
 	
 	naze.ev.on('creds.update', saveCreds)
 	
 	naze.ev.on('connection.update', async (update) => {
 		const { qr, connection, lastDisconnect, isNewLogin, receivedPendingNotifications } = update
-		if (!naze.authState.creds.registered) console.log('Connection: ', connection || false);
-		if ((connection === 'connecting' || !!qr) && pairingCode && phoneNumber && !naze.authState.creds.registered && !pairingStarted) {
+		if (!furina.authState.creds.registered) console.log('Connection: ', connection || false);
+		if ((connection === 'connecting' || !!qr) && pairingCode && phoneNumber && !furina.authState.creds.registered && !pairingStarted) {
 			setTimeout(async () => {
 				pairingStarted = true;
 				console.log('Requesting Pairing Code...')
-				let code = await naze.requestPairingCode(phoneNumber);
+				let code = await furina.requestPairingCode(phoneNumber);
 				console.log(`Your Pairing Code : ${code}`);
 			}, 3000)
 		}
@@ -177,19 +177,19 @@ async function startNazeBot() {
 			const reason = new Boom(lastDisconnect?.error)?.output.statusCode
 			if (reason === DisconnectReason.connectionLost) {
 				console.log('Connection to Server Lost, Attempting to Reconnect...');
-				startNazeBot()
+				startFurinaBot()
 			} else if (reason === DisconnectReason.connectionClosed) {
 				console.log('Connection closed, Attempting to Reconnect...');
-				startNazeBot()
+				startFurinaBot()
 			} else if (reason === DisconnectReason.restartRequired) {
 				console.log('Restart Required...');
-				startNazeBot()
+				startFurinaBot()
 			} else if (reason === DisconnectReason.timedOut) {
 				console.log('Connection Timed Out, Attempting to Reconnect...');
-				startNazeBot()
+				startFurinaBot()
 			} else if (reason === DisconnectReason.badSession) {
 				console.log('Delete Session and Scan again...');
-				startNazeBot()
+				startFurinaBot()
 			} else if (reason === DisconnectReason.connectionReplaced) {
 				console.log('Close current Session first...');
 			} else if (reason === DisconnectReason.loggedOut) {
@@ -205,15 +205,15 @@ async function startNazeBot() {
 				exec('rm -rf ./nazedev/*')
 				process.exit(0)
 			} else {
-				naze.end(`Unknown DisconnectReason : ${reason}|${connection}`)
+				furina.end(`Unknown DisconnectReason : ${reason}|${connection}`)
 			}
 		}
 		if (connection == 'open') {
-			console.log('Connected to : ' + JSON.stringify(naze.user, null, 2));
-			let botNumber = await naze.decodeJid(naze.user.id);
+			console.log('Connected to : ' + JSON.stringify(furina.user, null, 2));
+			let botNumber = await naze.decodeJid(furina.user.id);
 			if (global.db?.set[botNumber] && !global.db?.set[botNumber]?.join) {
 				if (my.ch.length > 0 && my.ch.includes('@newsletter')) {
-					if (my.ch) await naze.newsletterMsg(my.ch, { type: 'follow' }).catch(e => {})
+					if (my.ch) await furina.newsletterMsg(my.ch, { type: 'follow' }).catch(e => {})
 					db.set[botNumber].join = true
 				}
 			}
@@ -228,39 +228,39 @@ async function startNazeBot() {
 		if (isNewLogin) console.log(chalk.green('New device login detected...'))
 		if (receivedPendingNotifications == 'true') {
 			console.log('Please wait About 1 Minute...')
-			naze.ev.flush()
+			furina.ev.flush()
 		}
 	});
 	
-	naze.ev.on('contacts.update', (update) => {
+	furina.ev.on('contacts.update', (update) => {
 		for (let contact of update) {
-			let id = naze.decodeJid(contact.id)
+			let id = furina.decodeJid(contact.id)
 			if (store && store.contacts) store.contacts[id] = { id, name: contact.notify }
 		}
 	});
 	
-	naze.ev.on('call', async (call) => {
-		let botNumber = await naze.decodeJid(naze.user.id);
+	furina.ev.on('call', async (call) => {
+		let botNumber = await furina.decodeJid(furina.user.id);
 		if (global.db?.set[botNumber]?.anticall) {
 			for (let id of call) {
 				if (id.status === 'offer') {
-					let msg = await naze.sendMessage(id.from, { text: `Saat Ini, Kami Tidak Dapat Menerima Panggilan ${id.isVideo ? 'Video' : 'Suara'}.\nJika @${id.from.split('@')[0]} Memerlukan Bantuan, Silakan Hubungi Owner :)`, mentions: [id.from]});
-					await naze.sendContact(id.from, global.owner, msg);
-					await naze.rejectCall(id.id, id.from)
+					let msg = await furina.sendMessage(id.from, { text: `Saat Ini, Kami Tidak Dapat Menerima Panggilan ${id.isVideo ? 'Video' : 'Suara'}.\nJika @${id.from.split('@')[0]} Memerlukan Bantuan, Silakan Hubungi Owner :)`, mentions: [id.from]});
+					await furina.sendContact(id.from, global.owner, msg);
+					await furina.rejectCall(id.id, id.from)
 				}
 			}
 		}
 	});
 	
-	naze.ev.on('messages.upsert', async (message) => {
-		await MessagesUpsert(naze, message, store, groupCache);
+	furina.ev.on('messages.upsert', async (message) => {
+		await MessagesUpsert(furina, message, store, groupCache);
 	});
 	
-	naze.ev.on('group-participants.update', async (update) => {
-		await GroupParticipantsUpdate(naze, update, store, groupCache);
+	furina.ev.on('group-participants.update', async (update) => {
+		await GroupParticipantsUpdate(furina, update, store, groupCache);
 	});
 	
-	naze.ev.on('groups.update', (update) => {
+	furina.ev.on('groups.update', (update) => {
 		for (const n of update) {
 			if (store.groupMetadata[n.id]) {
 				groupCache.set(n.id, n);
@@ -269,19 +269,19 @@ async function startNazeBot() {
 		}
 	});
 	
-	naze.ev.on('presence.update', ({ id, presences: update }) => {
+	furina.ev.on('presence.update', ({ id, presences: update }) => {
 		store.presences[id] = store.presences?.[id] || {};
 		Object.assign(store.presences[id], update);
 	});
 	
 	setInterval(async () => {
-		if (naze?.user?.id) await naze.sendPresenceUpdate('available', naze.decodeJid(naze.user.id)).catch(e => {})
+		if (furina?.user?.id) await naze.sendPresenceUpdate('available', furina.decodeJid(furina.user.id)).catch(e => {})
 	}, 10 * 60 * 1000);
 
-	return naze
+	return furina
 }
 
-startNazeBot()
+startFurinaBot()
 
 // Process Exit
 const cleanup = async (signal) => {
