@@ -1491,7 +1491,7 @@ module.exports = naze = async (naze, m, msg, store, groupCache) => {
 			
 			// Bot Menu
 			case 'owner': {
-				await naze.sendContact(m.chat, owner, m);
+				await furina.sendContact(m.chat, owner, m);
 			}
 			break
 			case 'profile': case 'cek': {
@@ -3863,10 +3863,10 @@ module.exports = naze = async (naze, m, msg, store, groupCache) => {
 ├ *Money* : ${db.users[m.sender] ? db.users[m.sender].money.toLocaleString('id-ID') : '0'}
 ╰─┬────❍
 ╭─┴─❍「 *BOT INFO* 」❍
-├ *Nama Bot* : ${botname}
+├ *Nama Bot* : ${FurinaBot}
 ├ *Powered* : @${'0@s.whatsapp.net'.split('@')[0]}
 ├ *Owner* : @${owner[0].split('@')[0]}
-├ *Mode* : ${naze.public ? 'Public' : 'Self'}
+├ *Mode* : ${furina.public ? 'Public' : 'Self'}
 ├ *Prefix* :${set.multiprefix ? '「 MULTI-PREFIX 」' : ' *'+prefix+'*' }
 ├ *Premium Feature* : 🔸️
 ╰─┬────❍
