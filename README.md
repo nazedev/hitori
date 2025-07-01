@@ -5,7 +5,7 @@ This script is created by [Dyvillexzdev](--------------) using Node.js and the [
 ## Contributor
 
 - [DyvillexzDev](----) (Pembuat)
-- [Villexz(-----) (Penyedia Layanan API)
+- [Villexz](-------)(Penyedia Layanan API)
 - [Tauviq](------) (Penyumbang Code)
 
 #### Join Group
