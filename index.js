@@ -26,6 +26,14 @@ const question = (text) => new Promise((resolve) => rl.question(text, resolve))
 let pairingStarted = false;
 let phoneNumber;
 
+const userInfoSyt = () => {
+	try {
+		return os.userInfo().username
+	} catch (e) {
+		return process.env.USER || process.env.USERNAME || 'unknown';
+	}
+}
+
 global.fetchApi = async (path = '/', query = {}, options) => {
 	const urlnya = (options?.name || options ? ((options?.name || options) in global.APIs ? global.APIs[(options?.name || options)] : (options?.name || options)) : global.APIs['hitori'] ? global.APIs['hitori'] : (options?.name || options)) + path + (query ? '?' + decodeURIComponent(new URLSearchParams(Object.entries({ ...query }))) : '')
 	const { data } = await axios.get(urlnya, { ...((options?.name || options) ? {} : { headers: { 'accept': 'application/json', 'x-api-key': global.APIKeys[global.APIs['hitori']]}})})
@@ -40,7 +48,7 @@ const groupCache = new NodeCache({ stdTTL: 5 * 60, useClones: false });
 assertInstalled(process.platform === 'win32' ? 'where ffmpeg' : 'command -v ffmpeg', 'FFmpeg', 0);
 //assertInstalled(process.platform === 'win32' ? 'where magick' : 'command -v convert', 'ImageMagick', 0);
 console.log(chalk.greenBright('✅  All external dependencies are satisfied'));
-console.log(chalk.green.bold(`╔═════[${`${chalk.cyan(os.userInfo().username)}@${chalk.cyan(os.hostname())}`}]═════`));
+console.log(chalk.green.bold(`╔═════[${`${chalk.cyan(userInfoSyt())}@${chalk.cyan(os.hostname())}`}]═════`));
 print('OS', `${os.platform()} ${os.release()} ${os.arch()}`);
 print('Uptime', `${Math.floor(os.uptime() / 3600)} h ${Math.floor((os.uptime() % 3600) / 60)} m`);
 print('Shell', process.env.SHELL || process.env.COMSPEC || 'unknown');
