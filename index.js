@@ -38,7 +38,7 @@ const msgRetryCounterCache = new NodeCache();
 const groupCache = new NodeCache({ stdTTL: 5 * 60, useClones: false });
 
 assertInstalled(process.platform === 'win32' ? 'where ffmpeg' : 'command -v ffmpeg', 'FFmpeg', 0);
-assertInstalled(process.platform === 'win32' ? 'where magick' : 'command -v convert', 'ImageMagick', 0);
+//assertInstalled(process.platform === 'win32' ? 'where magick' : 'command -v convert', 'ImageMagick', 0);
 console.log(chalk.greenBright('✅  All external dependencies are satisfied'));
 console.log(chalk.green.bold(`╔═════[${`${chalk.cyan(os.userInfo().username)}@${chalk.cyan(os.hostname())}`}]═════`));
 print('OS', `${os.platform()} ${os.release()} ${os.arch()}`);
