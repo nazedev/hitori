@@ -46,7 +46,11 @@ async function GroupUpdate(naze, m, store) {
 		} else if (m.messageStubType == 27) {
 			if (!metadata.participants.some(a => a.id == normalizedTarget)) metadata.participants.push({ ...(metadata.addressingMode === 'lid' ? { id: '', lid: normalizedTarget } : { id: normalizedTarget, lid: '' }), admin: null });
 		} else if (m.messageStubType == 28 || m.messageStubType == 32) {
-			if (m.fromMe && ((jidNormalizedUser(naze.user.id) == normalizedTarget) || (jidNormalizedUser(naze.user.lid) == normalizedTarget))) delete store.groupMetadata[m.chat];
+			if (m.fromMe && ((jidNormalizedUser(naze.user.id) == normalizedTarget) || (jidNormalizedUser(naze.user.lid) == normalizedTarget))) {
+				delete store.messages[m.chat];
+				delete store.presences[m.chat];
+				delete store.groupMetadata[m.chat];
+			}
 			if(!!metadata) metadata.participants = metadata.participants.filter(p => {
 				const key = metadata.addressingMode === 'lid' ? jidNormalizedUser(p.lid) : jidNormalizedUser(p.id)
 				return key !== normalizedTarget
@@ -86,7 +90,11 @@ async function GroupParticipantsUpdate(naze, { id, participants, author, action 
 					if (!participant) metadata.participants.push({ ...(metadata.addressingMode === 'lid' ? { id: '', lid: jidNormalizedUser(n) } : { id: jidNormalizedUser(n), lid: '' }), admin: null });
 				} else if (action === 'remove') {
 					if (db.groups[id].leave) messageText = db.groups[id]?.text?.setleave || `@\nLeaving From ${metadata.subject}`;
-					if ((jidNormalizedUser(naze.user.lid) == jidNormalizedUser(n)) || (jidNormalizedUser(naze.user.id) == jidNormalizedUser(n))) delete store.groupMetadata[id];
+					if ((jidNormalizedUser(naze.user.lid) == jidNormalizedUser(n)) || (jidNormalizedUser(naze.user.id) == jidNormalizedUser(n))) {
+						delete store.messages[id];
+						delete store.presences[id];
+						delete store.groupMetadata[id];
+					}
 					if(metadata) metadata.participants = metadata.participants.filter(p => !participants.includes(metadata.addressingMode === 'lid' ? jidNormalizedUser(p.lid) : jidNormalizedUser(p.id)));
 				} else if (action === 'promote') {
 					if (db.groups[id].promote) messageText = db.groups[id]?.text?.setpromote || `@\nPromote From ${metadata.subject}\nBy @admin`;
