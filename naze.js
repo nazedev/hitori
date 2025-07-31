@@ -4568,6 +4568,7 @@ module.exports = naze = async (naze, m, msg, store) => {
 			}
 		}
 	} catch (e) {
+		if (e?.message?.includes('No sessions')) return;
 		console.log(e);
 		const errorKey = e?.code || e?.name || e?.message?.slice(0, 100) || 'unknown_error';
 		const now = Date.now();
