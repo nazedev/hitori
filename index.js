@@ -299,7 +299,7 @@ async function startNazeBot() {
 		for (const n of update) {
 			if (store.groupMetadata[n.id]) {
 				Object.assign(store.groupMetadata[n.id], n);
-			}
+			} else store.groupMetadata[n.id] = n;
 		}
 	});
 	
