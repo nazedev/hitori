@@ -143,8 +143,6 @@ async function startNazeBot() {
 		connectTimeoutMs: 60000,
 		browser: Browsers.ubuntu('Chrome'),
 		generateHighQualityLinkPreview: true,
-		//waWebSocketUrl: 'wss://web.whatsapp.com/ws',
-		cachedGroupMetadata: async (jid) => store.groupMetadata[jid],
 		shouldSyncHistoryMessage: msg => {
 			console.log(`\x1b[32mMemuat Chat [${msg.progress || 0}%]\x1b[39m`);
 			return !!msg.syncType;
@@ -269,7 +267,7 @@ async function startNazeBot() {
 				name: contact.notify
 			}
 			if (contact.id.endsWith('@lid')) {
-				store.contacts[trueJid].lid = contact.id;
+				store.contacts[trueJid].lid = jidNormalizedUser(contact.id);
 			}
 		}
 	});
@@ -347,3 +345,4 @@ fs.watchFile(file, () => {
 	delete require.cache[file]
 	require(file)
 });
+
