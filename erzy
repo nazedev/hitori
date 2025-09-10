@@ -1,0 +1,13 @@
+pkg update && pkg upgrade
+Termux-Change-repo
+pkg install git
+pkg install nodejs
+pkg install FFmpeg
+pkg install imagemagick
+pkg install yarn
+git clone https://github.com/nazedev/hitori
+ls
+cd hitori
+yarn
+node .
++6282392661410
