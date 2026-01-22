@@ -72,6 +72,7 @@ nano settings.js
 ```
 
 Then You Must edit your things (bot number is required)
+• Use Arrow marks (←↑↓→) to adjust typing position and also after editing values click on CTRL text above keyboard and make sure it became a cyan colour, if not click again. then click on X on keyboard then it will ask Y / N / Cancel then click on Y on keyboard and on next session just tap on enter button of your keyboard
 
 ```bash
 npm start
@@ -80,7 +81,6 @@ npm start
 ---
 
 ### Connection Options
-- Support Qr Code
 - Support Pairing Code
 ---
 
@@ -101,5 +101,6 @@ License: [MIT](https://choosealicense.com/licenses/mit/)
 | --- | --- | --- | --- |
 
 | [NazeDev](https://github.com/nazedev) | [Zaynn](https://github.com/ZaynRcK) | [Dani](https://github.com/dani) | [WhiskeySockets](https://github.com/WhiskeySockets) |
+
 
 
