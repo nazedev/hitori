@@ -35,16 +35,11 @@ This script is created by [Nazedev](https://github.com/nazedev) using Node.js an
 
 ---
 ## For Windows/VPS/RDP User
-* Download And Install Git [`Click Here`](https://git-scm.com/downloads)
-* Download And Install NodeJS [`Click Here`](https://nodejs.org/en/download)
-* Download And Install FFmpeg [`Click Here`](https://ffmpeg.org/download.html) (**Don't Forget Add FFmpeg to PATH enviroment variables**)
-* Download And Install ImageMagick [`Click Here`](https://imagemagick.org/script/download.php)
-
 ```bash
-git clone https://github.com/nazedev/hitori
+git clone https://github.com/amanmohdtp/hitori
 cd hitori
 npm install
-npm update
+npm start
 ```
 ---
 ## For Termux/Ubuntu/SSH User
@@ -52,25 +47,12 @@ npm update
 pkg update && pkg upgrade
 pkg install git
 pkg install nodejs
-pkg install ffmpeg
-pkg install imagemagick
-git clone https://github.com/nazedev/hitori
+git clone https://github.com/amanmohdtp/hitori
 cd hitori
 npm install
+npm start
 ```
 
-[ RECOMMENDED INSTALL ON TERMUX ]
-```bash
-pkg install yarn
-yarn
-```
-
----
-
-## Run
-```bash
-node .
-```
 ---
 
 ### Connection Options
@@ -93,4 +75,5 @@ License: [MIT](https://choosealicense.com/licenses/mit/)
 
 | [![Nazedev](https://github.com/nazedev.png?size=100)](https://github.com/nazedev) | [![Zaynn](https://github.com/ZaynRcK.png?size=100)](https://github.com/ZaynRcK) | [![Dani](https://github.com/nazedev.png?size=100)](https://github.com/nazedev) | [![WhiskeySockets](https://github.com/WhiskeySockets.png?size=100)](https://github.com/WhiskeySockets) |
 | --- | --- | --- | --- |
+
 | [NazeDev](https://github.com/nazedev) | [Zaynn](https://github.com/ZaynRcK) | [Dani](https://github.com/dani) | [WhiskeySockets](https://github.com/WhiskeySockets) |
