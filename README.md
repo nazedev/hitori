@@ -19,7 +19,7 @@ This script is created by [Nazedev](https://github.com/nazedev) using Node.js an
 - [Dani](https://github.com/nazedev) (Penyumbang Code)
 
 #### Join Group
-[![Grup WhatsApp](https://img.shields.io/badge/WhatsApp%20Group-25D366?style=for-the-badge&logo=whatsapp&logoColor=white)](https://chat.whatsapp.com/Hx9vcBVhbc04KLVGPFtH2R) 
+[![Grup WhatsApp](https://img.shields.io/badge/WhatsApp%20Group-25D366?style=for-the-badge&logo=whatsapp&logoColor=white)](https://chat.whatsapp.com/BVJa17GdjCi4mtZnH8dSee?mode=gi_t) 
 
 ---
 #### Deploy to Heroku
@@ -68,6 +68,12 @@ cd hitori
 npm install
 ```
 ```bash
+nano settings.js
+```
+
+Then You Must edit your things (bot number is required)
+
+```bash
 npm start
 ```
 
@@ -95,4 +101,5 @@ License: [MIT](https://choosealicense.com/licenses/mit/)
 | --- | --- | --- | --- |
 
 | [NazeDev](https://github.com/nazedev) | [Zaynn](https://github.com/ZaynRcK) | [Dani](https://github.com/dani) | [WhiskeySockets](https://github.com/WhiskeySockets) |
+
 
