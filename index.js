@@ -23,7 +23,49 @@ const print = (label, value) => console.log(`${chalk.green.bold('║')} ${chalk.
 const pairingCode = process.argv.includes('--qr') ? false : process.argv.includes('--pairing-code') || global.pairing_code;
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout })
 const question = (text) => new Promise((resolve) => rl.question(text, resolve))
-let pairingStarted = false;
+
+// Check FFmpeg
+const checkFFmpeg = () => {
+    try {
+        const command = process.platform === 'win32' ? 'where ffmpeg' : 'command -v ffmpeg';
+        execSync(command, { stdio: 'ignore' });
+        return true;
+    } catch {
+        return false;
+    }
+};
+
+// Check ImageMagick
+const checkImageMagick = () => {
+    try {
+        const command = process.platform === 'win32' ? 'where magick' : 'command -v convert';
+        execSync(command, { stdio: 'ignore' });
+        return true;
+    } catch {
+        return false;
+    }
+};
+
+// Perform checks
+console.log(chalk.cyan('🔍 Checking dependencies...'));
+
+if (checkFFmpeg()) {
+    console.log(chalk.green('✅ FFmpeg installed'));
+} else {
+    console.log(chalk.yellow('⚠️  FFmpeg not found (optional)'));
+    console.log(chalk.gray('   Install: https://ffmpeg.org/download.html'));
+}
+
+if (checkImageMagick()) {
+    console.log(chalk.green('✅ ImageMagick installed'));
+} else {
+    console.log(chalk.yellow('⚠️  ImageMagick not found (optional)'));
+    console.log(chalk.gray('   Install: https://imagemagick.org/script/download.php'));
+}
+
+console.log('');
+
+let pairingCodeSent = false;
 let phoneNumber;
 
 const userInfoSyt = () => {
@@ -45,7 +87,6 @@ const database = dataBase(global.tempatDB);
 const msgRetryCounterCache = new NodeCache();
 
 assertInstalled(process.platform === 'win32' ? 'where ffmpeg' : 'command -v ffmpeg', 'FFmpeg', 0);
-//assertInstalled(process.platform === 'win32' ? 'where magick' : 'command -v convert', 'ImageMagick', 0);
 console.log(chalk.greenBright('✅  All external dependencies are satisfied'));
 console.log(chalk.green.bold(`╔═════[${`${chalk.cyan(userInfoSyt())}@${chalk.cyan(os.hostname())}`}]═════`));
 print('OS', `${os.platform()} ${os.release()} ${os.arch()}`);
@@ -61,12 +102,6 @@ console.log(chalk.green.bold('╚' + ('═'.repeat(30))));
 server.listen(PORT, () => {
 	console.log('App listened on port', PORT);
 });
-
-/*
-	* Create By Naze
-	* Follow https://github.com/nazedev
-	* Whatsapp : https://whatsapp.com/channel/0029VaWOkNm7DAWtkvkJBK43
-*/
 
 async function startNazeBot() {
 	const { state, saveCreds } = await useMultiFileAuthState('nazedev');
@@ -135,25 +170,25 @@ async function startNazeBot() {
 	const naze = WAConnection({
 		logger: level,
 		getMessage,
-		syncFullHistory: true,
+		syncFullHistory: false, // ✅ Fixed: Don't sync full history
 		maxMsgRetryCount: 15,
 		msgRetryCounterCache,
 		retryRequestDelayMs: 10,
 		defaultQueryTimeoutMs: 0,
 		connectTimeoutMs: 60000,
+		keepAliveIntervalMs: 30000, // ✅ Added: Keep connection alive
 		browser: Browsers.ubuntu('Chrome'),
-		generateHighQualityLinkPreview: true,
+		markOnlineOnConnect: true, // ✅ Added: Mark as online immediately
+		fireInitQueries: false, // ✅ Added: Don't fire initial queries
+		generateHighQualityLinkPreview: false, // ✅ Fixed: Faster connection
+		emitOwnEvents: false, // ✅ Added: Don't emit own events
 		shouldSyncHistoryMessage: msg => {
 			console.log(`\x1b[32mMemuat Chat [${msg.progress || 0}%]\x1b[39m`);
-			return !!msg.syncType;
+			return false; // ✅ Fixed: Don't sync history
 		},
 		transactionOpts: {
 			maxCommitRetries: 10,
 			delayBetweenTriesMs: 10,
-		},
-		appStateMacVerification: {
-			patch: true,
-			snapshot: true,
 		},
 		auth: {
 			creds: state.creds,
@@ -161,21 +196,28 @@ async function startNazeBot() {
 		},
 	})
 	
-	if (pairingCode && !phoneNumber && !naze.authState.creds.registered) {
-		async function getPhoneNumber() {
-			phoneNumber = global.number_bot ? global.number_bot : process.env.BOT_NUMBER || await question('Please type your WhatsApp number : ');
-			phoneNumber = phoneNumber.replace(/[^0-9]/g, '')
+	// ✅ FIXED PAIRING CODE LOGIC
+	if (pairingCode && !naze.authState.creds.registered) {
+		if (!phoneNumber) {
+			phoneNumber = global.number_bot || process.env.BOT_NUMBER;
 			
-			if (!parsePhoneNumber('+' + phoneNumber).valid && phoneNumber.length < 6) {
-				console.log(chalk.bgBlack(chalk.redBright('Start with your Country WhatsApp code') + chalk.whiteBright(',') + chalk.greenBright(' Example : 62xxx')));
-				await getPhoneNumber()
+			if (!phoneNumber) {
+				phoneNumber = await question(chalk.cyan('Please type your WhatsApp number : '));
 			}
+			
+			phoneNumber = phoneNumber.replace(/[^0-9]/g, '');
+			
+			if (!parsePhoneNumber('+' + phoneNumber).valid || phoneNumber.length < 6) {
+				console.log(chalk.red('❌ Invalid phone number!'));
+				console.log(chalk.yellow('Start with your country code, Example: 62xxx'));
+				phoneNumber = null;
+				await exec('rm -rf ./nazedev/*');
+				process.exit(1);
+			}
+			
+			console.log(chalk.blue('Phone number captured. Waiting for connection...'));
+			console.log(chalk.blueBright('Estimated time: 2-5 minutes\n'));
 		}
-		(async () => {
-			await getPhoneNumber();
-			await exec('rm -rf ./nazedev/*');
-			console.log('Phone number captured. Waiting for Connection...\n' + chalk.blueBright('Estimated time: around 2 ~ 5 minutes'))
-		})()
 	}
 	
 	await Solving(naze, store)
@@ -183,53 +225,100 @@ async function startNazeBot() {
 	naze.ev.on('creds.update', saveCreds)
 	
 	naze.ev.on('connection.update', async (update) => {
-		const { qr, connection, lastDisconnect, isNewLogin, receivedPendingNotifications } = update
-		if (!naze.authState.creds.registered) console.log('Connection: ', connection || false);
-		if ((connection === 'connecting' || !!qr) && pairingCode && phoneNumber && !naze.authState.creds.registered && !pairingStarted) {
+		const { qr, connection, lastDisconnect, isNewLogin, receivedPendingNotifications } = update;
+		
+		// ✅ FIXED: Better pairing code request
+		if (connection === 'connecting' && pairingCode && phoneNumber && !naze.authState.creds.registered && !pairingCodeSent) {
+			console.log(chalk.cyan('🔄 Socket connecting...'));
+			
 			setTimeout(async () => {
-				pairingStarted = true;
-				console.log('Requesting Pairing Code...')
-				let code = await naze.requestPairingCode(phoneNumber);
-				console.log(chalk.blue('Your Pairing Code :'), chalk.green(code), '\n', chalk.yellow('Expires in 15 second'));
-			}, 3000)
+				try {
+					pairingCodeSent = true;
+					console.log(chalk.yellow('📲 Requesting pairing code...'));
+					
+					let code = await naze.requestPairingCode(phoneNumber);
+					
+					console.log('\n' + chalk.green('═'.repeat(40)));
+					console.log(chalk.green.bold('  📱 PAIRING CODE: ') + chalk.yellow.bold(code));
+					console.log(chalk.green('═'.repeat(40)) + '\n');
+					
+					console.log(chalk.cyan('📖 Instructions:'));
+					console.log(chalk.white('  1. Open WhatsApp on your phone'));
+					console.log(chalk.white('  2. Go to Settings → Linked Devices'));
+					console.log(chalk.white('  3. Tap "Link a Device"'));
+					console.log(chalk.white('  4. Tap "Link with phone number instead"'));
+					console.log(chalk.white('  5. Enter: ') + chalk.yellow.bold(code));
+					console.log(chalk.cyan('\n⏱️  Code expires in 60 seconds!\n'));
+					
+				} catch (err) {
+					pairingCodeSent = false;
+					console.error(chalk.red('❌ Pairing code request failed:'), err.message);
+					
+					if (err.message.includes('timed out') || err.message.includes('closed')) {
+						console.log(chalk.yellow('\n💡 Connection closed too quickly.'));
+						console.log(chalk.yellow('   This usually happens due to:'));
+						console.log(chalk.yellow('   1. Unstable internet connection'));
+						console.log(chalk.yellow('   2. Firewall blocking WhatsApp servers'));
+						console.log(chalk.yellow('   3. Old Baileys version\n'));
+					}
+				}
+			}, 5000); // ✅ Wait 5 seconds for socket to be ready
 		}
+		
 		if (connection === 'close') {
-			const reason = new Boom(lastDisconnect?.error)?.output.statusCode
-			if (reason === DisconnectReason.connectionLost) {
-				console.log('Connection to Server Lost, Attempting to Reconnect...');
-				startNazeBot()
+			const reason = new Boom(lastDisconnect?.error)?.output.statusCode;
+			console.log(chalk.yellow(`\n⚠️  Connection closed. Reason: ${reason || 'Unknown'}`));
+			
+			if (reason === DisconnectReason.loggedOut) {
+				console.log(chalk.red('❌ Logged out. Delete "nazedev" and restart.'));
+				exec('rm -rf ./nazedev/*');
+				process.exit(1);
+			} else if (reason === DisconnectReason.connectionLost) {
+				console.log(chalk.yellow('Connection lost. Reconnecting...'));
+				pairingCodeSent = false;
+				startNazeBot();
 			} else if (reason === DisconnectReason.connectionClosed) {
-				console.log('Connection closed, Attempting to Reconnect...');
-				startNazeBot()
+				console.log(chalk.yellow('Connection closed. Reconnecting...'));
+				pairingCodeSent = false;
+				startNazeBot();
 			} else if (reason === DisconnectReason.restartRequired) {
-				console.log('Restart Required...');
-				startNazeBot()
+				console.log(chalk.yellow('Restart required...'));
+				pairingCodeSent = false;
+				startNazeBot();
 			} else if (reason === DisconnectReason.timedOut) {
-				console.log('Connection Timed Out, Attempting to Reconnect...');
-				startNazeBot()
+				console.log(chalk.yellow('Connection timed out. Reconnecting...'));
+				pairingCodeSent = false;
+				startNazeBot();
 			} else if (reason === DisconnectReason.badSession) {
-				console.log('Delete Session and Scan again...');
-				startNazeBot()
+				console.log(chalk.red('Bad session. Delete and scan again...'));
+				exec('rm -rf ./nazedev/*');
+				startNazeBot();
 			} else if (reason === DisconnectReason.connectionReplaced) {
-				console.log('Close current Session first...');
-			} else if (reason === DisconnectReason.loggedOut) {
-				console.log('Scan again and Run...');
-				exec('rm -rf ./nazedev/*')
-				process.exit(1)
+				console.log(chalk.red('Close current session first...'));
 			} else if (reason === DisconnectReason.forbidden) {
-				console.log('Connection Failure, Scan again and Run...');
-				exec('rm -rf ./nazedev/*')
-				process.exit(1)
+				console.log(chalk.red('Connection forbidden. Scan again...'));
+				exec('rm -rf ./nazedev/*');
+				process.exit(1);
 			} else if (reason === DisconnectReason.multideviceMismatch) {
-				console.log('Scan again...');
-				exec('rm -rf ./nazedev/*')
-				process.exit(0)
+				console.log(chalk.red('Multidevice mismatch. Scan again...'));
+				exec('rm -rf ./nazedev/*');
+				process.exit(0);
 			} else {
-				naze.end(`Unknown DisconnectReason : ${reason}|${connection}`)
+				console.log(chalk.red(`Unknown disconnect: ${reason}|${connection}`));
+				pairingCodeSent = false;
+				startNazeBot();
 			}
 		}
-		if (connection == 'open') {
-			console.log('Connected to : ' + JSON.stringify(naze.user, null, 2));
+		
+		if (connection === 'open') {
+			pairingCodeSent = false;
+			console.log('\n' + chalk.green('═'.repeat(40)));
+			console.log(chalk.green.bold('  ✅ CONNECTED SUCCESSFULLY!'));
+			console.log(chalk.green('═'.repeat(40)));
+			console.log(chalk.white('  📱 Number: ') + chalk.cyan(naze.user.id.split(':')[0]));
+			console.log(chalk.white('  👤 Name: ') + chalk.cyan(naze.user.name || 'Unknown'));
+			console.log(chalk.green('═'.repeat(40)) + '\n');
+			
 			let botNumber = await naze.decodeJid(naze.user.id);
 			if (global.db?.set[botNumber] && !global.db?.set[botNumber]?.join) {
 				if (my.ch.length > 0 && my.ch.includes('@newsletter')) {
@@ -238,17 +327,20 @@ async function startNazeBot() {
 				}
 			}
 		}
+		
 		if (qr) {
-			if (!pairingCode) qrcode.generate(qr, { small: true })
+			if (!pairingCode) qrcode.generate(qr, { small: true });
 			app.use('/qr', async (req, res) => {
-				res.setHeader('content-type', 'image/png')
-				res.end(await toBuffer(qr))
+				res.setHeader('content-type', 'image/png');
+				res.end(await toBuffer(qr));
 			});
 		}
-		if (isNewLogin) console.log(chalk.green('New device login detected...'))
-		if (receivedPendingNotifications == 'true') {
-			console.log('Please wait About 1 Minute...')
-			naze.ev.flush()
+		
+		if (isNewLogin) console.log(chalk.green('✨ New device login detected...'));
+		
+		if (receivedPendingNotifications === 'true') {
+			console.log(chalk.yellow('⏳ Please wait about 1 minute...'));
+			naze.ev.flush();
 		}
 	});
 	
@@ -310,14 +402,13 @@ async function startNazeBot() {
 		if (naze?.user?.id) await naze.sendPresenceUpdate('available', naze.decodeJid(naze.user.id)).catch(e => {})
 	}, 10 * 60 * 1000);
 
-	return naze
+	return naze;
 }
 
-startNazeBot()
+startNazeBot();
 
-// Process Exit
 const cleanup = async (signal) => {
-	console.log(`Received ${signal}. Menyimpan database...`)
+	console.log(`Received ${signal}. Saving database...`)
 	if (global.db) await database.write(global.db)
 	if (global.store) await storeDB.write(global.store)
 	server.close(() => {
@@ -345,4 +436,3 @@ fs.watchFile(file, () => {
 	delete require.cache[file]
 	require(file)
 });
-
