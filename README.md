@@ -37,19 +37,37 @@ This script is created by [Nazedev](https://github.com/nazedev) using Node.js an
 ## For Windows/VPS/RDP User
 ```bash
 git clone https://github.com/amanmohdtp/hitori
+```
+```bash
 cd hitori
+```
+```bash
 npm install
+```
+```bash
 npm start
 ```
 ---
 ## For Termux/Ubuntu/SSH User
 ```bash
 pkg update && pkg upgrade
+```
+```bash
 pkg install git
+```
+```bash
 pkg install nodejs
+```
+```bash
 git clone https://github.com/amanmohdtp/hitori
+```
+```bash
 cd hitori
+```
+```bash
 npm install
+```
+```bash
 npm start
 ```
 
@@ -77,3 +95,4 @@ License: [MIT](https://choosealicense.com/licenses/mit/)
 | --- | --- | --- | --- |
 
 | [NazeDev](https://github.com/nazedev) | [Zaynn](https://github.com/ZaynRcK) | [Dani](https://github.com/dani) | [WhiskeySockets](https://github.com/WhiskeySockets) |
+
