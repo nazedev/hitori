@@ -329,13 +329,26 @@ async function Solving(naze, store) {
 	}
 	
 	naze.findJidByLid = (lid, store, resolve = false) => {
-		for (const contact of Object.values(store.groupMetadata).flatMap(g => g.participants)) {
-			if (contact.lid === lid && contact.id) return contact.id;
+		const groupMeta = store?.groupMetadata
+		if (groupMeta) {
+			for (const g of Object.values(groupMeta)) {
+				if (!g?.participants) continue
+				for (const contact of g.participants) {
+					if (contact?.lid === lid && contact?.id) {
+						return contact.id
+					}
+				}
+			}
 		}
-		for (const contact of Object.values(store.contacts)) {
-			if (contact.lid === lid && contact.id) return contact.id;
+		const contacts = store?.contacts
+		if (contacts) {
+			for (const contact of Object.values(contacts)) {
+				if (contact?.lid === lid && contact?.id) {
+					return contact.id
+				}
+			}
 		}
-		if (resolve) return lid;
+		if (resolve) return lid
 		return null;
 	}
 	
@@ -1074,4 +1087,5 @@ fs.watchFile(file, () => {
 	console.log(chalk.redBright(`Update ${__filename}`))
 	delete require.cache[file]
 	require(file)
+
 });
