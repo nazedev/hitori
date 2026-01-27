@@ -186,7 +186,7 @@ Add or edit commands inside the [switch (command)](https://github.com/nazedev/hi
 
 ```js
 case 'ping': {
-  reply('pong 🏓')
+  m.reply('pong 🏓')
 }
 break
 ```
@@ -288,4 +288,5 @@ License: [MIT](https://choosealicense.com/licenses/mit/)
 
 | [![Nazedev](https://github.com/nazedev.png?size=100)](https://github.com/nazedev) | [![Zaynn](https://github.com/ZaynRcK.png?size=100)](https://github.com/ZaynRcK) | [![Dani](https://github.com/nazedev.png?size=100)](https://github.com/nazedev) | [![WhiskeySockets](https://github.com/WhiskeySockets.png?size=100)](https://github.com/WhiskeySockets) |
 | --- | --- | --- | --- |
+
 | [NazeDev](https://github.com/nazedev) | [Zaynn](https://github.com/ZaynRcK) | [Dani](https://github.com/dani) | [WhiskeySockets](https://github.com/WhiskeySockets) |
