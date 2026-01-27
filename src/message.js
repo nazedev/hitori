@@ -12,7 +12,7 @@ const groupMetadataTimers = {};
 const { checkStatus } = require('./database');
 const { imageToWebp, videoToWebp, writeExif, gifToWebp } = require('../lib/exif');
 const { getBuffer, getSizeMedia, fetchJson, sleep, axiosss, fixBytes } = require('../lib/function');
-const { jidNormalizedUser, proto, getBinaryNodeChildren, getBinaryNodeChildString, getBinaryNodeChild, generateMessageIDV2, jidEncode, encodeSignedDeviceIdentity, generateWAMessageContent, generateForwardMessageContent, prepareWAMessageMedia, delay, areJidsSameUser, extractMessageContent, generateMessageID, downloadContentFromMessage, generateWAMessageFromContent, jidDecode, generateWAMessage, toBuffer, getContentType, WAMessageStubType, getDevice } = require('baileys');
+const { jidNormalizedUser, proto, getBinaryNodeChildren, getBinaryNodeChildString, getBinaryNodeChild, generateMessageIDV2, jidEncode, encodeSignedDeviceIdentity, generateWAMessageContent, generateForwardMessageContent, prepareWAMessageMedia, delay, areJidsSameUser, extractMessageContent, generateMessageID, downloadContentFromMessage, generateWAMessageFromContent, jidDecode, generateWAMessage, toBuffer, getContentType, getDevice } = require('baileys');
 
 /*
 	* Create By Naze
@@ -33,7 +33,7 @@ async function GroupUpdate(naze, m, store) {
 		const admin = `@${m.sender.split('@')[0]}`
 		const metadata = store.groupMetadata[m.chat];
 		const normalizedTarget = clearParse(m.messageStubParameters[0]);
-		const type = WAMessageStubType[m.messageStubType];
+		const type = m.messageStubType;
 		const messages = {
 			1: 'mereset link grup!',
 			21: `mengubah Subject Grup menjadi :\n*${normalizedTarget}*`,
@@ -1089,3 +1089,4 @@ fs.watchFile(file, () => {
 	require(file)
 
 });
+
