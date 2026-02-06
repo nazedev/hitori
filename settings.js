@@ -66,7 +66,7 @@ global.APIs = {
 	naze: 'https://api.naze.biz.id',
 }
 global.APIKeys = {
-	'https://api.naze.biz.id': 'YOUR_API_KEY',
+	'https://api.naze.biz.id': 'nz-ef85375a44',
 }
 
 // Lainnya
@@ -80,4 +80,5 @@ fs.watchFile(file, () => {
 	console.log(chalk.redBright(`Update ${__filename}`))
 	delete require.cache[file]
 	require(file)
+
 });
