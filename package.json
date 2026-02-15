@@ -29,7 +29,7 @@
     "aki-api": "npm:@aqul/akinator-api@1.0.1",
     "awesome-phonenumber": "^4.4.0",
     "axios": "^0.24.0",
-    "baileys": "latest",
+    "baileys": "^7.0.0-rc.9",
     "chalk": "^4.1.2",
     "cheerio": "^1.0.0-rc.10",
     "chess.js": "^1.2.0",
@@ -64,7 +64,7 @@
     "util": "^0.12.5",
     "xmlhttprequest": "^1.8.0",
     "yargs": "^17.6.2",
-    "ytdl-core": "npm:@distube/ytdl-core@latest",
+    "ytdl-core": "npm:@distube/ytdl-core@4.16.12",
     "yt-search": "^2.10.4"
   },
   "overrides": {
