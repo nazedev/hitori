@@ -5,7 +5,7 @@ import https from 'https';
 import axios from 'axios';
 import chalk from 'chalk';
 import crypto from 'crypto';
-import FileType from 'file-type';
+import { fileTypeFromBuffer, fileTypeFromFile } from 'file-type';
 import chokidar from 'chokidar';
 import { fileURLToPath } from 'url';
 import PhoneNumber from 'awesome-phonenumber';
@@ -574,14 +574,14 @@ async function Solving(naze, store) {
 		const randomName = crypto.randomBytes(6).readUIntLE(0, 6).toString(36);
 		
 		if (Buffer.isBuffer(PATH)) {
-			let type = await FileType.fromBuffer(PATH) || { mime, ext };
+			let type = await fileTypeFromBuffer(PATH) || { mime, ext };
 			mime = type.mime; ext = type.ext;
 			filename = path.join(dir, `${randomName}.${ext}`);
 			fs.writeFileSync(filename, PATH);
 			isTemp = true;
 		} else if (/^data:.*?\/.*?;base64,/i.test(PATH)) {
 			let buffer = Buffer.from(PATH.split`,`[1], 'base64');
-			let type = await FileType.fromBuffer(buffer) || { mime, ext };
+			let type = await fileTypeFromBuffer(buffer) || { mime, ext };
 			mime = type.mime; ext = type.ext;
 			filename = path.join(dir, `${randomName}.${ext}`);
 			fs.writeFileSync(filename, buffer);
@@ -600,7 +600,7 @@ async function Solving(naze, store) {
 			});
 			isTemp = true;
 		} else if (typeof PATH === 'string' && fs.existsSync(PATH)) {
-			let type = await FileType.fromFile(PATH) || { mime, ext };
+			let type = await fileTypeFromFile(PATH) || { mime, ext };
 			mime = type.mime; ext = type.ext;
 			filename = PATH;
 			isTemp = false;

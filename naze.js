@@ -16,7 +16,7 @@ import axios from 'axios';
 import chalk from 'chalk';
 import yts from 'yt-search';
 import fetch from 'node-fetch';
-import FileType from 'file-type';
+import { fileTypeFromBuffer } from 'file-type';
 import { Chess } from 'chess.js';
 import { fileURLToPath } from 'url';
 import FormData from 'form-data';
@@ -3088,12 +3088,12 @@ Select Bot Settings:
 				try {
 					const hasil = await ytMp4(text);
 					videoPath = hasil.result;
-					await m.reply({ video: { url: videoPath }, caption: `*📍Title:* ${hasil.title}\n*✏Description:* ${hasil.desc ? hasil.desc : ''}\n*🚀Channel:* ${hasil.channel}\n*🗓Upload at:* ${hasil.uploadDate}`});
+					await m.reply({ document: { url: videoPath }, mimetype: 'video/mp4', fileName: `${hasil.title}.mp4`, caption: `*📍Title:* ${hasil.title}\n*✏Description:* ${hasil.desc ? hasil.desc : ''}\n*🚀Channel:* ${hasil.channel}\n*🗓Upload at:* ${hasil.uploadDate}`});
 					setLimit(m, db)
 				} catch (e) {
 					try {
 						const { result: hasil } = await fetchApi('/download/youtube', { url: text, format: '360' });
-						await m.reply({ video: { url: hasil.download }, caption: `*📍Title:* ${hasil.title}\n*✏Quality:* ${hasil.quality ? hasil.quality : ''}\n*⏳Duration:* ${hasil.duration}` })
+						await m.reply({ document: { url: hasil.download }, mimetype: 'video/mp4', fileName: `${hasil.title}.mp4`, caption: `*📍Title:* ${hasil.title}\n*✏Quality:* ${hasil.quality ? hasil.quality : ''}\n*⏳Duration:* ${hasil.duration}` })
 						setLimit(m, db)
 					} catch (e) {
 						m.reply(global.mess.fail);
@@ -3139,7 +3139,7 @@ Select Bot Settings:
 					const hasil = await fetchApi('/download/tiktok', { url: text })
 					m.react('⏳')
 					if (hasil.result.download.type == "video") {
-						await m.reply({ video: { url: hasil.result.download?.video?.nowm_hd || hasil.result.download?.video?.nowm }, caption: `*📍Title:* ${hasil.result.desc || '-'}\n*🕓Create At:* ${hasil.result.create_time}\n*🎃Author:* ${hasil.result.author.nickname} (@${hasil.result.author.unique_id})` });
+						await m.reply({ document: { url: hasil.result.download?.video?.nowm_hd || hasil.result.download?.video?.nowm }, mimetype: 'video/mp4', fileName: `${hasil.result.desc || 'tiktok'}.mp4`, caption: `*📍Title:* ${hasil.result.desc || '-'}\n*🕓Create At:* ${hasil.result.create_time}\n*🎃Author:* ${hasil.result.author.nickname} (@${hasil.result.author.unique_id})` });
 					} else if (hasil.result.download.type == "images") {
 						await naze.sendAlbumMessage(m.chat, {
 							album: hasil.result.download.images.map(a => ({ image: { url: a.url }})),
@@ -3193,7 +3193,7 @@ Select Bot Settings:
 						m.reply('Video Tidak ditemukan!')
 					} else {
 						m.react('⏳')
-						await naze.sendFileUrl(m.chat, hasil.result.hd || hasil.result.sd, `*🎐Title:* ${hasil.result.title}`, m);
+						await m.reply({ document: { url: hasil.result.hd || hasil.result.sd }, mimetype: 'video/mp4', fileName: `${hasil.result.title || 'facebook'}.mp4`, caption: `*🎐Title:* ${hasil.result.title}` });
 					}
 					setLimit(m, db)
 				} catch (e) {
