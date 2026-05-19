@@ -3092,7 +3092,7 @@ Select Bot Settings:
 					setLimit(m, db)
 				} catch (e) {
 					try {
-						const { result: hasil } = await fetchApi('/download/youtube', { url: text, format: '360' });
+						const { result: hasil } = await fetchApi('/download/youtube', { url: text, format: '1080' });
 						await m.reply({ document: { url: hasil.download }, mimetype: 'video/mp4', fileName: `${hasil.title}.mp4`, caption: `*📍Title:* ${hasil.title}\n*✏Quality:* ${hasil.quality ? hasil.quality : ''}\n*⏳Duration:* ${hasil.duration}` })
 						setLimit(m, db)
 					} catch (e) {
