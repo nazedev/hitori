@@ -1,6 +1,6 @@
 { pkgs }: {
     deps = [
-        pkgs.nodejs
+        pkgs.nodejs_22
         pkgs.nodePackages.typescript
         pkgs.ffmpeg
         pkgs.git
@@ -16,4 +16,3 @@
         ];
     };
 }
-

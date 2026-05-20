@@ -1,8 +1,8 @@
-FROM node:lts-buster
+FROM node:22-bookworm-slim
 
 RUN apt-get update && \
   apt-get install -y \
-  ffmpeg \
+  ffmpeg && \
   apt-get upgrade -y && \
   rm -rf /var/lib/apt/lists/*
 
