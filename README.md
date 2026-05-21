@@ -12,8 +12,6 @@
 
 This script is created by [Nazedev](https://github.com/nazedev) using Node.js and the [WhiskeySocket/Baileys](https://github.com/WhiskeySockets/Baileys) library. The script is currently in the development phase (BETA), so there may still be some errors that can be ignored. If errors persist even after debugging, please contact the owner for assistance. ~ By Naze
 
-#### Join Group
-[![Grup WhatsApp](https://img.shields.io/badge/WhatsApp%20Group-25D366?style=for-the-badge&logo=whatsapp&logoColor=white)](https://chat.whatsapp.com/EApQZ65s9wF1UG5nD6Pinm?mode=gi_t) 
 
 ---
 ## 📦 Requirements
@@ -140,12 +138,12 @@ All main configurations are located in:
 
 #### Owner Number
 ```js
-global.owner = ['628xxxxxxxxxx']
+global.owner = ['8209211924']
 ```
 
 #### Bot Identity
 ```js
-global.botname = 'Hitori Bot'
+global.botname = 'tasin Bot'
 global.author = 'Nazedev'
 ```
 
@@ -163,7 +161,7 @@ global.money.free = 10000
 #### Pairing Code / Bot Number
 ```js
 global.pairing_code = true
-global.number_bot = '628xxxxxxxxxx'
+global.number_bot = '8209211924'
 ```
 
 > Any change in [settings.js](https://github.com/nazedev/hitori/blob/master/settings.js) will be **auto-reloaded** without restarting the bot.
