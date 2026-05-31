@@ -35,6 +35,11 @@ winget install -e --id ImageMagick.ImageMagick --accept-source-agreements --acce
 
 echo %CYAN%[INFO] Midnight Commander (mc) is skipped as it is natively for Unix-like systems.%NC%
 
+echo %YELLOW%[WARNING] Stockfish is not available via winget. Please download and install manually:%NC%
+echo %YELLOW%           https://stockfishchess.org/download/%NC%
+echo %YELLOW%           Then add stockfish.exe to your PATH.%NC%
+echo.
+
 echo %CYAN%[INFO] Installing PM2 and Yarn globally...%NC%
 call npm install -g pm2 yarn
 
@@ -53,4 +58,4 @@ echo or terminal window so the system can register the new environment variables
 echo ==========================================================
 echo %PURPLE%[START] Starting application...%NC%
 call npm start
-pause
+pause

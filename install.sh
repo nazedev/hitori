@@ -50,22 +50,24 @@ main() {
   case "$PKG" in
     pkg) # Termux
       pkg update -y
-      pkg install -y git nodejs ffmpeg mc yarn imagemagick
+      pkg install -y git nodejs ffmpeg mc yarn imagemagick stockfish
       ;;
     apt|apt-get) # Ubuntu/Debian
       run_as_root $PKG update -y
-      run_as_root $PKG install -y git nodejs npm ffmpeg mc yarn imagemagick
+      run_as_root $PKG install -y git nodejs npm ffmpeg mc yarn imagemagick stockfish
       ;;
     pacman) # Arch Linux
       run_as_root pacman -Syu --noconfirm
-      run_as_root pacman -S --noconfirm git nodejs npm ffmpeg mc yarn imagemagick
+      run_as_root pacman -S --noconfirm git nodejs npm ffmpeg mc yarn imagemagick stockfish
       ;;
     dnf) # Fedora/AlmaLinux
-      run_as_root dnf install -y git nodejs npm ffmpeg mc yarn ImageMagick
+      run_as_root dnf install -y git nodejs npm ffmpeg mc yarn ImageMagick stockfish
       ;;
     yum) # CentOS/RHEL
       run_as_root yum install -y epel-release
       run_as_root yum install -y git nodejs npm ffmpeg mc ImageMagick
+      # NOTE: stockfish tidak tersedia di repo CentOS/RHEL
+      # Install manual: https://stockfishchess.org/download/
       ;;
   esac
 

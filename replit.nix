@@ -8,6 +8,7 @@
         pkgs.speedtest-cli
         pkgs.wget
         pkgs.yarn
+        pkgs.stockfish
         pkgs.libuuid
     ];
     env = {

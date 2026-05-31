@@ -1,4 +1,5 @@
 import './settings.js';
+import { DIFFICULTY_MAP, getStockfishMove } from './chess-engine/stockfish.js';
 import fs from 'fs';
 import os from 'os';
 import util from 'util';
@@ -548,7 +549,8 @@ const naze = async (naze, m, msg, store) => {
 						turn: savedData.turn,
 						botMode: savedData.botMode,
 						time: savedData.time,
-						_fen: savedData._fen
+						_fen: savedData._fen,
+						difficulty: savedData.difficulty ?? 0
 					});
 				}
 				if (chess[m.sender].isCheckmate() || chess[m.sender].isDraw() || chess[m.sender].isGameOver()) {
@@ -572,15 +574,41 @@ const naze = async (naze, m, msg, store) => {
 					delete chess[m.sender];
 					return m.reply(`♟Permainan Selesai\nPemenang: @${m.sender.split('@')[0]}`);
 				}
-				const moves = chess[m.sender].moves({ verbose: true });
-				const botMove = moves[Math.floor(Math.random() * moves.length)];
-				chess[m.sender].move(botMove);
+				const skillLevel = chess[m.sender].difficulty ?? 0;
+				let botMove;
+				try {
+					const sfMoveStr = await getStockfishMove(chess[m.sender].fen(), skillLevel);
+					if (sfMoveStr) {
+						const from = sfMoveStr.slice(0, 2);
+						const to = sfMoveStr.slice(2, 4);
+						const promotion = sfMoveStr[4] || 'q';
+						botMove = chess[m.sender].move({ from, to, promotion });
+					}
+				} catch (_) {
+					const moves = chess[m.sender].moves({ verbose: true });
+					const randomMove = moves[Math.floor(Math.random() * moves.length)];
+					botMove = chess[m.sender].move(randomMove);
+					await m.reply(`⚠️ *Stockfish engine gagal*, bot gerak secara random.\nPastikan Stockfish sudah terinstall di server.`);
+				}
+				if (!botMove) {
+					const moves = chess[m.sender].moves({ verbose: true });
+					botMove = chess[m.sender].move(moves[Math.floor(Math.random() * moves.length)]);
+				}
 				chess[m.sender]._fen = chess[m.sender].fen();
 				chess[m.sender].time = Date.now();
 				
 				if (chess[m.sender].isGameOver()) {
+					const encodedFen = encodeURI(chess[m.sender]._fen);
+					const boardUrls = [`https://www.chess.com/dynboard?fen=${encodedFen}&size=3&coordinates=inside`,`https://www.chess.com/dynboard?fen=${encodedFen}&board=graffiti&piece=graffiti&size=3&coordinates=inside`,`https://chessboardimage.com/${encodedFen}.png`,`https://backscattering.de/web-boardimage/board.png?fen=${encodedFen}&coordinates=true&size=765`,`https://fen2image.chessvision.ai/${encodedFen}/`];
+					for (let url of boardUrls) {
+						try {
+							const { data } = await axios.get(url, { responseType: 'arraybuffer' });
+							await m.reply({ image: data, caption: `♟️CHESS GAME (vs BOT)\n\nLangkahmu: ${from} → ${to}\nLangkah bot: ${botMove.from} → ${botMove.to}\n\n♟Permainan Selesai\nPemenang: BOT`, mentions: [m.sender] });
+							break;
+						} catch (e) {}
+					}
 					delete chess[m.sender];
-					return m.reply(`♟Permainan Selesai\nPemenang: BOT`);
+					return;
 				}
 				const encodedFen = encodeURI(chess[m.sender]._fen);
 				const boardUrls = [`https://www.chess.com/dynboard?fen=${encodedFen}&size=3&coordinates=inside`,`https://www.chess.com/dynboard?fen=${encodedFen}&board=graffiti&piece=graffiti&size=3&coordinates=inside`,`https://chessboardimage.com/${encodedFen}.png`,`https://backscattering.de/web-boardimage/board.png?fen=${encodedFen}&coordinates=true&size=765`,`https://fen2image.chessvision.ai/${encodedFen}/`];
@@ -3984,11 +4012,16 @@ Select Bot Settings:
 						delete chess[m.sender];
 						return m.reply('Sukses Menghapus Sesi vs BOT')
 					} else {
+						const difficulty = args[1]?.toLowerCase();
+						if (!difficulty || !(difficulty in DIFFICULTY_MAP)) {
+							return m.reply(`♿️Pilih Level Kesulitan:\n\n${Object.keys(DIFFICULTY_MAP).join(' | ')}\n\nContoh: ${prefix + command} bot easy\nContoh: ${prefix + command} computer hard`);
+						}
 						const { DEFAUT_POSITION } = await import('chess.js').then(m => m.Chess);
 						chess[m.sender] = new Chess(DEFAUT_POSITION);
 						chess[m.sender]._fen = chess[m.sender].fen();
 						chess[m.sender].turn = m.sender;
 						chess[m.sender].botMode = true;
+						chess[m.sender].difficulty = DIFFICULTY_MAP[difficulty];
 						chess[m.sender].time = Date.now();
 						const encodedFen = encodeURI(chess[m.sender]._fen);
 						const boardUrls = [`https://www.chess.com/dynboard?fen=${encodedFen}&size=3&coordinates=inside`,`https://www.chess.com/dynboard?fen=${encodedFen}&board=graffiti&piece=graffiti&size=3&coordinates=inside`,`https://chessboardimage.com/${encodedFen}.png`,`https://backscattering.de/web-boardimage/board.png?fen=${encodedFen}&coordinates=true&size=765`,`https://fen2image.chessvision.ai/${encodedFen}/`];
@@ -4985,4 +5018,4 @@ Select Bot Settings:
 	}
 }
 
-export default naze;
+export default naze;
