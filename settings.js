@@ -18,7 +18,7 @@ global.author = 'Algy Dev'
 global.botname = 'Algy Xz1'
 global.packname = 'Bot WhatsApp'
 global.timezone = 'Mozambique/Maputo' // Ganti pakai command .settimezone
-global.locale = 'pt' // Ganti pakai command .setlocale
+global.locale = 'mz' // Ganti pakai command .setlocale
 global.listprefix = ["+","!","."]
 global.defaultAdminKey = crypto.randomBytes(5).toString("hex");
 
