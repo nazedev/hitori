@@ -1,0 +1,3 @@
+{
+  "ignore": ["nazedev", "node_modules", "database", "logs"]
+}
