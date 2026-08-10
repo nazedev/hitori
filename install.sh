@@ -65,7 +65,7 @@ run_with_spinner() {
 
         local colored_bar="${CYAN}${bar_solid}${GRAY}${bar_empty}${NC}"
         
-        printf "\r  ${MAGENTA}%s${NC} %-36s ${GRAY}[${NC}%s${GRAY}]${NC} ${DIM}%3d%%${NC}" "${spin_frames[i++ % ${#spin_frames[@]}]}" "$msg" "$colored_bar" "$progress"
+        printf "\r  ${MAGENTA}%b${NC} %-36s ${GRAY}[${NC}%b${GRAY}]${NC} ${DIM}%3d%%${NC}" "${spin_frames[i++ % ${#spin_frames[@]}]}" "$msg" "$colored_bar" "$progress"
         sleep 0.1
     done
     wait $pid
@@ -80,10 +80,10 @@ run_with_spinner() {
 
     if [ $exit_code -eq 0 ]; then
         local full_bar="${GREEN}${full_bar_solid}${NC}"
-        printf "  ${GREEN}✔${NC} %-36s ${GRAY}[${NC}%s${GRAY}]${NC} ${DIM}100%%${NC}\n" "$msg" "$full_bar"
+        printf "  ${GREEN}✔${NC} %-36s ${GRAY}[${NC}%b${GRAY}]${NC} ${DIM}100%%${NC}\n" "$msg" "$full_bar"
     else
         local full_bar="${RED}${full_bar_solid}${NC}"
-        printf "  ${RED}✖${NC} %-36s ${GRAY}[${NC}%s${GRAY}]${NC} ${RED}FAIL${NC}\n" "$msg" "$full_bar"
+        printf "  ${RED}✖${NC} %-36s ${GRAY}[${NC}%b${GRAY}]${NC} ${RED}FAIL${NC}\n" "$msg" "$full_bar"
         echo -e "\n  ${RED}=== ERROR LOG ===${NC}"
         cat "$LOG_FILE" | while read -r line; do echo -e "  ${GRAY}$line${NC}"; done
         echo -e "  ${RED}=================${NC}\n"
