@@ -42,7 +42,7 @@ run_with_spinner() {
     local i=0
     
     local progress=0
-    local increment=3
+    local increment=1
     
     while kill -0 $pid 2>/dev/null; do
         if [ $progress -lt 99 ]; then
@@ -66,7 +66,7 @@ run_with_spinner() {
         local colored_bar="${CYAN}${bar_solid}${GRAY}${bar_empty}${NC}"
         
         printf "\r  ${MAGENTA}%b${NC} %s ${GRAY}[${NC}%b${GRAY}]${NC} ${DIM}%3d%%${NC}" "${spin_frames[i++ % ${#spin_frames[@]}]}" "$msg" "$colored_bar" "$progress"
-        sleep 0.1
+        sleep 0.5
     done
     wait $pid
     local exit_code=$?
