@@ -86,7 +86,11 @@ global.fetchApi = async (endpoint = "/", data = {}, options = {}) => {
 			const fetchOptions = { method, headers, dispatcher: customDispatcher };
 			if (method !== "GET" && method !== "HEAD") fetchOptions.body = payload;
 			const res = await fetch(url, fetchOptions);
-			if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+			if (!res.ok) {
+				let errorData = "";
+				try { errorData = await res.text(); } catch (e) {}
+				throw new Error(`API Request Failed!\nURL: ${url}\nStatus: ${res.status} ${res.statusText}\nResponse: ${errorData || "No error message provided by server."}`);
+			}
 
 			if (options.stream) {
 				let ext = options.ext;
