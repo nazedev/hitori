@@ -111,8 +111,9 @@ function Invoke-WithSpinner {
         $outStr = "`r  " + $RED + $CROSS + $NC + " " + $formattedMsg + " " + $bOpen + $RED + $bar + $NC + $bClose + " " + $RED + "FAIL" + $NC + $clearStr
         Write-Host $outStr
         Write-Host "`n  $RED === ERROR LOG === $NC"
-        Get-Content $LOG_FILE | ForEach-Object { Write-Host "  $GRAY $_ `n $NC" -NoNewline }
-        Write-Host "`n  $RED ================= $NC`n"
+        Get-Content $LOG_FILE | ForEach-Object { Write-Host "  $NC $_" }
+        Write-Host "  $RED ================= $NC"
+        Write-Host "  $DIM Full log saved to: $LOG_FILE $NC`n"
         try { [Console]::CursorVisible = $true } catch {}
         Read-Host "Press Enter to exit"
         exit 1
