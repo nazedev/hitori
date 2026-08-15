@@ -1,0 +1,7 @@
+services:
+  bot:
+    build: .
+    volumes:
+      - ./database:/app/database
+      - ./nazedev:/app/nazedev
+    restart: on-failure

@@ -1,0 +1,16 @@
+{
+	"name": "hitori",
+	"description": "WhatsApp Bot Using Lib Baileys",
+	"repository": "https://github.com/nazedev/hitori",
+	"keywords": ["whatsapp-bot", "multi-device", "bot", "whatsapp"],
+	"formation": {
+		"worker": {
+			"quantity": 1
+		}
+	},
+	"buildpacks": [
+		{
+			"url": "heroku/nodejs"
+		}
+	]
+}
