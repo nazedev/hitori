@@ -91,8 +91,9 @@ run_with_spinner() {
         local full_bar="${RED}${full_bar_solid}${NC}"
         printf "  ${RED}✖${NC} %-33s ${GRAY}[${NC}%b${GRAY}]${NC} ${RED}FAIL${NC}\n" "$msg" "$full_bar"
         echo -e "\n  ${RED}=== ERROR LOG ===${NC}"
-        cat "$LOG_FILE" | while read -r line; do echo -e "  ${GRAY}$line${NC}"; done
-        echo -e "  ${RED}=================${NC}\n"
+        cat "$LOG_FILE" | while read -r line; do echo -e "  ${NC}$line"; done
+        echo -e "  ${RED}=================${NC}"
+        echo -e "  ${DIM}Full log saved to: $LOG_FILE${NC}\n"
         exit 1
     fi
 }
@@ -114,6 +115,17 @@ if [ "$(id -u)" -ne 0 ] && command -v sudo >/dev/null 2>&1; then
 fi
 
 main() {
+    if [[ "$PWD" == *"/storage/"* ]]; then
+        echo -e "\n  ${RED}✖ ERROR: Unsupported Directory Location${NC}"
+        echo -e "  You are attempting to install the bot in Android's shared storage (/storage/...)."
+        echo -e "  This filesystem does not support 'symlinks', which are strictly required by Node.js.\n"
+        echo -e "  ${YELLOW}How to fix this:${NC}"
+        echo -e "  Please run the command below to PERMANENTLY MOVE the bot to the native Termux environment."
+        echo -e "  (Note: In the future, you must use 'cd ~/hitori-master' to access your bot)\n"
+        echo -e "  ${CYAN}mv \"$PWD\" ~/hitori-master && cd ~/hitori-master && bash install.sh${NC}\n"
+        exit 1
+    fi
+
     local PKG=$(detect_pkg)
 
     if [ -z "$PKG" ]; then
