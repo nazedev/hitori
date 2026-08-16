@@ -1218,20 +1218,16 @@ const isProtobufAnomaly = (msgInfo) => {
 	if (!msgInfo || typeof msgInfo !== "object") return false;
 	const ts = typeof msgInfo.messageTimestamp === "number" ? msgInfo.messageTimestamp : msgInfo.messageTimestamp?.low ? msgInfo.messageTimestamp.low : Number(msgInfo.messageTimestamp) || 0;
 	if (ts > 100000000000) return true;
-
 	const contextInfo = getMessageContextInfo(msgInfo.message);
 	if (contextInfo && (contextInfo.botMetadata || contextInfo.botMessageSecret)) return true;
-
 	const chatJid = msgInfo.key?.remoteJid || msgInfo.chat || "";
 	const isFromMe = msgInfo.key ? msgInfo.key.fromMe : msgInfo.fromMe;
 	if (chatJid.endsWith("@g.us") && !isFromMe) {
 		const hasDeviceList = !!contextInfo?.deviceListMetadata;
 		if (contextInfo && contextInfo.deviceListMetadataVersion && !hasDeviceList) return true;
 	}
-
 	return false;
 };
-
 async function Serialize(sock, msg, store) {
 	const botLid = sock.decodeJid(sock.user.lid);
 	const botNumber = sock.decodeJid(sock.user.id);
@@ -1280,7 +1276,6 @@ async function Serialize(sock, msg, store) {
 				};
 		}
 		m.isBaileys = m.id ? ["BAE", "B1E", "B24E"].some((a) => m.id.startsWith(a) && [12, 16, 20, 40].includes(m.id.length)) || /(.)\1{5,}|[^0-9A-F]/.test(m.id) : false;
-		m.isBot = m.isBaileys;
 	}
 	if (m.message) {
 		m.type = getContentType(m.message) || Object.keys(m.message)[0];
@@ -1313,9 +1308,27 @@ async function Serialize(sock, msg, store) {
 				.filter((a) => a) || [];
 		m.device = getDevice(m.id);
 		m.expiration = m.msg?.contextInfo?.expiration || m?.metadata?.ephemeralDuration || store?.messages?.[m.chat]?.array?.slice(-1)[0]?.metadata?.ephemeralDuration || 0;
-		let sScore = m.isBaileys || isBotMessageType(m.message, m.type) || isProtobufAnomaly(msg) ? 100 : 0;
-		m.suspicionScore = sScore;
-		if (sScore >= 100 && !m.key?.fromMe) m.isBot = true;
+		m.suspicionScore = 0;
+		if (m.isBaileys || isBotMessageType(m.message, m.type) || isProtobufAnomaly(msg)) {
+			m.suspicionScore = 100;
+		} else {
+			const context = m.msg?.contextInfo || {};
+			const extAd = context.externalAdReply;
+			const devMeta = context.deviceListMetadata;
+			const num = String(m.sender || "").replace(/[^0-9]/g, "");
+			if (context.isForwarded && context.forwardingScore >= 999) m.suspicionScore += 35;
+			else if (extAd && extAd.forwardingScore > 999) m.suspicionScore += 30;
+			else if (context.forwardingScore > 100) m.suspicionScore += 15;
+			if (devMeta && !(devMeta.senderKeyHash || devMeta.recipientKeyHash) && Object.keys(devMeta).length === 0) m.suspicionScore += 15;
+			if ((context.mentionedJid || []).length > 20) m.suspicionScore += 15;
+			if (extAd && (extAd.sourceType === "newsletter" || extAd.sourceUrl?.includes("newsletter"))) m.suspicionScore += 15;
+			if (m.msg?.interactiveResponseMessage || m.msg?.listResponseMessage) m.suspicionScore += 8;
+			const botSymbols = m.text?.match(/[^\x00-\x7F]/g) || [];
+			if (botSymbols.length > 10) m.suspicionScore += 10;
+			else if (botSymbols.length > 5) m.suspicionScore += 5;
+			m.suspicionScore = Math.min(100, m.suspicionScore);
+		}
+		if (m.suspicionScore >= 60 && !m.key?.fromMe) m.isBot = true;
 		m.timestamp = (typeof m.messageTimestamp === "number" ? m.messageTimestamp : m.messageTimestamp.low ? m.messageTimestamp.low : m.messageTimestamp.high) || m.msg.timestampMs * 1000;
 		m.isMedia = !!m.msg?.mimetype || !!m.msg?.thumbnailDirectPath;
 		if (m.isMedia) {
@@ -1367,8 +1380,12 @@ async function Serialize(sock, msg, store) {
 				"";
 
 			m.quoted.isBaileys = m.quoted.id ? ["BAE", "B1E", "B24E"].some((a) => m.quoted.id.startsWith(a) && [12, 16, 20, 40].includes(m.quoted.id.length)) || /(.)\1{5,}|[^0-9A-F]/.test(m.quoted.id) : false;
-			let qsScore = m.quoted.isBaileys || isBotMessageType(m.quoted.message, m.quoted.type) || isProtobufAnomaly(m.quoted) ? 100 : 0;
-			m.quoted.isBot = qsScore >= 100 && !m.quoted.fromMe;
+			let qsScore = 0;
+			if (m.quoted.isBaileys || isBotMessageType(m.quoted.message, m.quoted.type) || isProtobufAnomaly(m.quoted)) {
+				qsScore = 100;
+			}
+			m.quoted.suspicionScore = qsScore;
+			m.quoted.isBot = qsScore >= 60 && !m.quoted.fromMe;
 			m.getQuotedObj = async () => {
 				if (!m.quoted.id) return null;
 				let q = await global.loadMessage(m.chat, m.quoted.id, sock);
