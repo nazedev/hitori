@@ -1,0 +1,36 @@
+# Node dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local WhatsApp Session & Auth Credentials (CRITICAL - DO NOT COMMIT)
+database/
+nazedev/
+session/
+sessions/
+*.session
+*.session-journal
+creds.json
+
+# Local Archives & Backups
+backup/
+backup_before_update/
+*.zip
+*.tar.gz
+
+# Environment & Private Keys
+.env
+.env.local
+.env.*.local
+
+# Temporary Files, Media Cache & Logs
+temp/
+logs/
+*.log
+.system_generated/
+scratch/
+
+# OS Metadata
+.DS_Store
+Thumbs.db

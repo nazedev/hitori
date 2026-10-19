@@ -1,0 +1,11 @@
+node_modules
+.git
+backup
+database
+nazedev
+*.md
+.prettierrc.json
+nodemon.json
+install.bat
+install.sh
+.agents

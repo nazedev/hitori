@@ -1,0 +1,6 @@
+node_modules
+backup
+database
+nazedev
+.git
+package-lock.json
