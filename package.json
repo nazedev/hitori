@@ -65,7 +65,7 @@
 		"socket.io-client": "^4.7.5",
 		"unzipper": "^0.12.3",
 		"yt-search": "^2.13.1",
-		"ytdl-core": "npm:@distube/ytdl-core@*"
+		"ytdl-core": "npm:@distube/ytdl-core@^4.16.12"
 	},
 	"devDependencies": {
 		"nodemon": "^3.1.14"
