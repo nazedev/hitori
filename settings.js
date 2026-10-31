@@ -63,7 +63,7 @@ global.money = {
 };
 
 global.mess = {
-	key: "Apikey limit! Silahkan Upgrade: https://sock.biz.id",
+	key: "Apikey limit! Silahkan Upgrade: https://naze.dev",
 	owner: "Khusus Owner!",
 	admin: "Khusus Admin!",
 	botAdmin: "Bot harus Admin!",
